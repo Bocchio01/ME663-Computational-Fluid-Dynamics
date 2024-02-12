@@ -1,0 +1,47 @@
+\section{Derivation of discretized governing equations}
+\label{sec:derivation_of_discretized_governing_equations}
+
+In this section, we will derive the discretized governing equations for the incompressible Navier-Stokes equations, which will be used to solve the problem at hand.
+
+The set of incompressible Navier-Stokes equations is given by:
+
+\begin{equation*}
+    \nabla \cdot {\mathbf{u}} = 0
+    \label{eq:incompressible_navier_stokes_continuity}
+\end{equation*}
+
+\begin{equation*}
+    \rho \frac{\partial \mathbf{u}}{\partial t} + \rho \mathbf{u} \cdot \nabla \mathbf{u} = -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
+    \label{eq:incompressible_navier_stokes_momentum}
+\end{equation*}
+
+In the rest of the document, the following hypotheses will be considered:
+
+\begin{itemize}
+    \item Steady-state problem: $\frac{\partial \mathbf{u}}{\partial t} = 0$
+    \item Constant density: $\rho = \text{const}$
+    \item Constant dynamic viscosity: $\mu = \text{const}$
+    \item Zero body forces: $\mathbf{f} = 0$
+\end{itemize}
+
+Based on these hypotheses, the incompressible Navier-Stokes equations can be simplified and expanded as follows:
+
+\begin{align}
+    \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}     & = 0                                                                                                                         \\
+    \frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y} & = -\frac{\partial p}{\partial x} + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \\
+    \frac{\partial u v}{\partial x} + \frac{\partial v v}{\partial y} & = -\frac{\partial p}{\partial y} + \nu \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right)
+    \label{eq:incompressible_navier_stokes_steady_2D}
+\end{align}
+
+Where $\nu = \frac{\mu}{\rho}$ is the kinematic viscosity and $p = \frac{p}{\rho}$ is the non-dimensional pressure.
+
+Obviously, to solve the problem using a discrete calculator, the equations must be therefore discretized.
+
+\input{src/03.1 - finite_volume_method}
+\input{src/03.2 - application_of_the_finite_volume_method}
+
+% \input{src/03.3 - convection_term}
+% \input{src/03.4 - diffusion_term}
+% \input{src/03.5 - source_term}
+% \input{src/03.4 - discretized_governing_equations}
+

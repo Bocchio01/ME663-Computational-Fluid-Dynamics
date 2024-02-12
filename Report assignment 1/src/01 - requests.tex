@@ -1,0 +1,18 @@
+\section{Requests}
+\label{sec:requests}
+
+This assignment was about writing a computer program using the language we prefer, to solve the incompressible Navier-Stokes equations based on Vanka's Symmetric Coupled Gauss-Seidel (SCGS) method \cite{VANKA1986138}.
+
+The objective here is to find out the numerical solutions for a flow in a square cavity with the top wall moving at a constant velocity $U_{lid}$.
+Different suggestions / requests were given, such as:
+
+\begin{itemize}
+    \item Use UDS, Hybrid, and/or QUICK convection schemes on a mesh of $40x40$ and $80x80$ nodes at $Re=400$ and $Re=1000$, where $Re = \frac{U_{lid} \cdot L}{\nu}$ and $L$ is the length of the cavity.
+    \item Set the convergence criterion to $10^{-4}$.
+    \item Report the wall-clock time and total number of iterations for each case.
+    \item Compare your results in terms of $u(y)@x=0.5L$ and $v(x)@y=0.5L$ with results in Tables I and II from \textit{Ghia et al.} \cite{Ghia1982HighReSF} paper.
+    \item What is the optimal under-relaxation factor for each case?
+    \item If you try more than one convection scheme, which scheme is more accurate compared to \textit{Ghia et al.} \cite{Ghia1982HighReSF} 'exact solutions'?
+    \item Use $2^{nd}-order$ and $4^{th}-order$ schemes to approximate the diffusion term $\nu \left[ \frac{\partial^2(\phi)}{\partial x^2} + \frac{\partial^2(\phi)}{\partial y^2} \right] $ in the Navier-Stokes equation.
+\end{itemize}
+

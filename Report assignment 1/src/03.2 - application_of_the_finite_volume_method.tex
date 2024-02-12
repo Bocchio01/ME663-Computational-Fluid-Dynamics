@@ -1,0 +1,37 @@
+\subsection{Application of the Finite Volume Method}
+\label{subsec:application_of_the_finite_volume_method}
+
+Having defined our working framework, we can now proceed to the application of the Finite Volume Method (FVM) to the incompressible Navier-Stokes equations \ref{eq:incompressible_navier_stokes_steady_2D}.
+
+To do so, we start by giving the general integral form of the governing equations, and then proceed to the discretization of the convection, diffusion and source terms separately.
+
+In particular, assuming from now on to have a Cartesian grid, with a uniform mesh spacing in both the $x$ and $y$ directions, the (FVM) reads as follows:
+
+
+
+
+From now on, we will focus on the $x$ direction, given that the treatment for the $y$ direction is analogous.
+
+The first step is to integrate the governing equations over each control volume.
+
+Our discretized set of equations will be:
+
+\begin{align}
+    % TODO Check if the equation is correct
+    \int_{V} u \frac{\partial u}{\partial x} dV + v \frac{\partial u}{\partial y} dV - \frac{1}{\rho} \frac{\partial p}{\partial x} dV - \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) dV - f_x dV = 0 \\
+    \int_{V} u \frac{\partial v}{\partial x} dV + v \frac{\partial v}{\partial y} dV - \frac{1}{\rho} \frac{\partial p}{\partial y} dV - \nu \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right) dV - f_y dV = 0
+\end{align}
+
+We can now proceed to the discretization of the convection, diffusion and source terms separately.
+
+The rest of the treatment will be done considering just the $x$ direction, given that the treatment for the $y$ direction is analogous.
+
+Our starter equation is:
+
+\begin{equation}
+    \int_{V} \underbrace{u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y}}_{\text{Convection term}} - \underbrace{\frac{1}{\rho} \frac{\partial p}{\partial x} dV}_{\text{Pressure term}} - \underbrace{\nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) dV}_{\text{Diffusion term}} - \underbrace{f_x dV}_{\text{Source term}} = 0
+    \label{eq:inc_navier_stokes_steady_2D_discretized_x}
+\end{equation}
+
+Before proceeding, we need to define the control volume and the control volume faces geometrically.
+
