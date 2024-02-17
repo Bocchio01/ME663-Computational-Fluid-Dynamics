@@ -1,0 +1,81 @@
+\subsection{Vanka's approach}
+\label{subsec:vanka_approach}
+
+The \acrshort{scgs} method is based on the idea of solving the equations in a coupled way.
+
+This means that for each iteration, we will obtain the correction for each of the 5 variables simultaneously.
+To make this possible, we need to introduce a new matrix, called the \textbf{Vanka matrix \cite{VANKA1986138}}.
+
+Considering the system of equations \ref{eq:residual_system}, we can write them in a matrix form as:
+
+\begin{equation}
+    \begin{bmatrix}
+        (A_P^u)_{i-1,j} & 0             & 0               & 0             & \Delta y  \\
+        0               & (A_P^u)_{i,j} & 0               & 0             & -\Delta y \\
+        0               & 0             & (A_P^v)_{i,j-1} & 0             & \Delta x  \\
+        0               & 0             & 0               & (A_P^v)_{i,j} & -\Delta x \\
+        -\Delta y       & \Delta y      & -\Delta x       & \Delta x      & 0
+    \end{bmatrix}
+    \begin{bmatrix}
+        u'_{i-1,j} \\
+        u'_{i,j}   \\
+        v'_{i,j-1} \\
+        v'_{i,j}   \\
+        p'_{i,j}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        R_{i-1,j}^u \\
+        R_{i,j}^u   \\
+        R_{i,j-1}^v \\
+        R_{i,j}^v   \\
+        R_{i,j}^c
+    \end{bmatrix}
+    \label{eq:vanka_matrix}
+\end{equation}
+
+As we can see, the Vanka matrix is a $5 \times 5$ matrix, and it's a function of the coefficients of the discretized equations, and of the grid spacing.
+
+Our unknown is the vector of the corrections, being the $A_P^\phi$ coefficients and the $R^\phi$ residuals known from the previous iteration.
+
+Given that, we can solve the system of equations \ref{eq:vanka_matrix} to obtain the corrections for the velocity and pressure components at each cell of the domain.
+
+To do so, we must invert the Vanka matrix, and multiply it by the residuals vector:
+
+\begin{equation}
+    \begin{bmatrix}
+        \phi'
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        A^\phi
+    \end{bmatrix}^{-1}
+    \begin{bmatrix}
+        R^\phi
+    \end{bmatrix}
+\end{equation}
+
+As stated in \cite{VANKA1986138}, the inverse of the Vanka matrix can be computed analytically using the following algorithm:
+
+\begin{gather}
+    r_i = \frac{a_{5i}}{a_{ii}}, \quad i = 1, 2, 3, 4 \\
+    DEN = \sum_{i=1}^{4} a_{5i} r_i \\
+    x_5 = \frac{\left[\sum_{i=1}^{4} r_i b_i - b_5\right]}{DEN} \\
+    x_i = \frac{b_i - a_{i5} x_5}{a_{ii}}, \quad i = 1, 2, 3, 4
+\end{gather}
+
+Where $a_{ij}$ are the elements of the Vanka matrix $A^\phi$, $b_i$ are the elements of the residuals vector $R^\phi$, and $x_i$ are the elements of the corrections vector $\phi'$.
+
+In case we want to apply an under-relaxation factor to the corrections, we can modify Vanka's Matrix as follows:
+
+\begin{equation}
+    \begin{bmatrix}
+        \frac{(A_P^u)_{i-1,j}}{\alpha_u} & 0                              & 0                                & 0                              & \Delta y  \\
+        0                                & \frac{(A_P^u)_{i,j}}{\alpha_u} & 0                                & 0                              & -\Delta y \\
+        0                                & 0                              & \frac{(A_P^v)_{i,j-1}}{\alpha_v} & 0                              & \Delta x  \\
+        0                                & 0                              & 0                                & \frac{(A_P^v)_{i,j}}{\alpha_v} & -\Delta x \\
+        -\Delta y                        & \Delta y                       & -\Delta x                        & \Delta x                       & 0
+    \end{bmatrix}
+\end{equation}
+
+Where $\alpha_u$ and $\alpha_v$ are the under-relaxation factors for the velocity components $u$ and $v$ respectively.

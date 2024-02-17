@@ -9,6 +9,7 @@
 
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usetikzlibrary{shapes, arrows}
 
 \usetikzlibrary{calc,patterns,angles,quotes}
 \setlength{\parindent}{0pt}
@@ -23,7 +24,9 @@ pdfauthor={Tommaso Bocchietti}
 
 \newacronym{cfd}{CFD}{Computational Fluid Dynamics}
 \newacronym{uds}{UDS}{Upwind Differencing Scheme}
+\newacronym{hybrid}{Hybrid}{Hybrid Scheme}
 \newacronym{quick}{QUICK}{Quadratic Upstream Interpolation for Convective Kinematics}
+\newacronym{gs}{GS}{Gauss-Seidel Iterative Method}
 \newacronym{scgs}{SCGS}{Symmetric Coupled Gauss-Seidel}
 \newacronym{sim}{SIMPLE}{Semi-Implicit Method for Pressure Linked Equations}
 
@@ -47,32 +50,34 @@ pdfauthor={Tommaso Bocchietti}
 \tableofcontents
 \listoffigures
 \listoftables
+\lstlistoflistings
 \printglossary[type=\acronymtype]
 
 \clearpage
 \input{src/01 - requests}
 \input{src/02 - methods}
 \input{src/03 - derivation_of_discretized_governing_equations}
-% \input{src/04 - derivation_of_discretized_boundary_condition_equations}
+\input{src/04 - schemes}
+\input{src/05 - iterative_solving_methods}
+\input{src/06 - code_implementation}
+% \input{src/07 - results}
 
 \clearpage
 \bibliographystyle{plain}
 \bibliography{ref}
 
-% \clearpage
-% \appendix
-% \section{Mathematica code}
-% \label{sec:appendix}
+\clearpage
+\appendix
+\section{Mathematica code}
+\label{sec:appendix}
 
-% Here follows the \texttt{Mathematica} notebook used for symbolic analysis of the equations.
+Here follows the \texttt{Mathematica} notebook used for symbolic analysis of the discretized schemes.
 
-% \lstinputlisting[
-%     style=mathematica,
-%     language=Mathematica,
-%     caption=Mathematica notebook used for symbolic analysis of the equations.,
-%     firstline=1,
-%     lastline=56
-% ]{files/notebook.txt}
+\lstinputlisting[
+    style=mathematica,
+    language=Mathematica,
+    caption=Mathematica notebook used for symbolic analysis of the discretized schemes.,
+]{files/Mathematica.txt}
 
 
 \end{document}

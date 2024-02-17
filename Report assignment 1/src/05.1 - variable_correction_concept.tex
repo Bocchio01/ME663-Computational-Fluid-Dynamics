@@ -1,0 +1,31 @@
+\subsection{Variable Correction Concept}
+\label{subsec:variable_correction_concept}
+
+Before presenting the \acrshort{scgs} method itself, it's now useful to introduce the concept of variable correction, which is crucial for the understanding of the method.
+
+The idea here is to observe a generic current state of the system $\phi^{(n)}$, as the sum of a known part $\phi^{(n-1)}$ and a correction $\delta \phi^{(n)}$:
+
+\begin{equation}
+    \phi^{(n)} = \phi^{(n-1)} + \delta \phi^{(n)}
+    \label{eq:variable_correction_concept}
+\end{equation}
+
+Where $\phi$ is a generic variable, and $n$ is the iteration index.
+
+For simplicity of notation, we will drop the iteration index in the following, and we will rewrite Equation \ref{eq:variable_correction_concept} as:
+
+\begin{equation}
+    \phi = \phi^* + \phi'
+    \label{eq:variable_correction_concept_simplified}
+\end{equation}
+
+Where $\phi^*$ is the known part, and $\phi'$ is the correction.
+
+By doing so, we can rewrite the state of the system at the current iteration as:
+
+\begin{align}
+    u_{i,j} & = u_{i,j}^* + u_{i,j}' \\
+    v_{i,j} & = v_{i,j}^* + v_{i,j}' \\
+    p_{i,j} & = p_{i,j}^* + p_{i,j}'
+    \label{eq:variable_corrections}
+\end{align}

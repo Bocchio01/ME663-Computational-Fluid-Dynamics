@@ -1,0 +1,24 @@
+\subsection{Convergence criterion}
+\label{sec:convergence_criterion}
+
+Being the \acrshort{scgs} method an iterative method, we need to define a criterion to stop the iterations, and to consider the solution as converged.
+
+We could have adopted many criteria, but probably the most intuitive one is to monitor the residuals of the equations over the entire domain for each iteration, and to stop the cycle when the maximum of the residual is below a certain threshold.
+
+So far we have defined 5 residuals, one for each equation, and we can define other 3 residuals derived from the previous ones, as follows:
+
+\begin{equation}
+    \begin{aligned}
+        \text{Continuity residual} & : R^p = | R^c |                                               \\
+        \text{Momentum residual u} & : R^u = \frac{\left( | R_{i-1}^u | + | R_{i}^u | \right) }{2} \\
+        \text{Momentum residual v} & : R^v = \frac{\left( | R_{j-1}^v | + | R_{j}^v | \right) }{2}
+    \end{aligned}
+\end{equation}
+
+By doing so, our convergence criterion will be:
+
+\begin{equation}
+    \max \left( R^p, R^u, R^v \right) < \varepsilon
+\end{equation}
+
+Where $\varepsilon$ is the threshold and may vary between $10^{-3}$ and $10^{-6}$, depending on the problem and the computational resources available.

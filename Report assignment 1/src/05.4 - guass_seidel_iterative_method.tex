@@ -1,0 +1,35 @@
+\subsection{Gauss-Seidel Iterative Method}
+\label{subsec:gauss_seidel_iterative_method}
+
+Before, proceeding with the solution of the \acrshort{scgs} method, we need to introduce the \acrfull{gs} method.
+
+The \acrshort{gs} method is an iterative method used to solve a system of linear equations, and it's based on the idea of solving one equation at a time, and using the updated values of the variables to solve the next equation.
+
+For our purpose, is interesting to observe how the introduction of the 'under-relaxation' factor $\alpha$ can help to improve the convergence of the method.
+
+In particular, we can apply the \acrshort{gs} method to solve a similar equation of our system, as for example:
+
+\begin{equation}
+    (A_P^\phi) \phi_P = \sum_{nb} (A_{nb}^\phi) \phi_{nb} + S^\phi
+\end{equation}
+
+Where $\phi$ is a generic variable, and $S^\phi$ is the source term of the equation.
+
+The \acrshort{gs} method can be written as:
+
+\begin{align}
+    \phi_P & = \frac{\sum_{nb} (A_{nb}^\phi) \phi_{nb}^* + S^\phi}{A_P^\phi} + \phi_P^*                                \\
+    \phi_P & = \alpha \left(\frac{\sum_{nb} (A_{nb}^\phi) \phi_{nb}^* + S^\phi}{A_P^\phi} - \phi_P^*\right) + \phi_P^*
+\end{align}
+
+Where $\phi_P^*$ is the value of the variable at the previous iteration, and $\alpha$ is the under-relaxation factor.
+
+By rearranging the last equation, we have:
+
+\begin{equation}
+    \phi_P' = \frac{R_P^\phi}{\left(\frac{A_P^\phi}{\alpha_\phi}\right)}
+\end{equation}
+
+Where $\phi_P'$ is the correction to apply to the variable, and $R_P^\phi$ is the residual of the equation at the $P$ cell.
+
+This result will be useful in the next section.

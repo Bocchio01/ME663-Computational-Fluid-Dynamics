@@ -32,37 +32,42 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \lstset{
-    basicstyle          =   \sffamily,
-    keywordstyle        =   \bfseries,
-    commentstyle        =   \rmfamily\itshape,
-    stringstyle         =   \ttfamily,
+    basicstyle        = \sffamily,
+    keywordstyle      = \bfseries,
+    commentstyle      = \rmfamily\itshape,
+    stringstyle       = \ttfamily,
+    backgroundcolor   = \color{white}
+    numberstyle       = \tiny\color{codegray},
     flexiblecolumns,
-    numbers             =   left,
-    showspaces          =   false,
-    showstringspaces    =   false,
-    captionpos          =   t,
-    frame               =   single,
-    xleftmargin=15pt,
-    xrightmargin=5pt,
+    frame             = single,
+    xleftmargin       = 15pt,
+    xrightmargin      = 5pt,
+    breakatwhitespace = false,
+    breaklines        = true,
+    basewidth         = 0.5em,
+    captionpos        = b,
+    columns           = fixed,
+    keepspaces        = true,
+    numbers           = left,
+    numbersep         = 5pt,
+    showspaces        = false,
+    showstringspaces  = false,
+    showtabs          = false,
+    tabsize           = 4
 }
 
 \lstdefinestyle{mathematica}{
-    backgroundcolor=\color{white},
-    commentstyle=\color[HTML]{338AAF}\ttfamily,
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    breakatwhitespace=false,
-    breaklines=true,
-    basewidth=0.5em,
-    captionpos=b,
-    columns=fixed,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=4
+    commentstyle = \color[HTML]{338AAF}\ttfamily,
+    stringstyle  = \color{codepurple},
 }
+
+\lstdefinestyle{C}{
+    language     = C,
+    keywordstyle = \color{green!40!black},
+    commentstyle = \color{purple!40!black},
+    stringstyle  = \color{brown},
+    escapeinside = {(*@}{@*)},
+}
+
 
 \endinput

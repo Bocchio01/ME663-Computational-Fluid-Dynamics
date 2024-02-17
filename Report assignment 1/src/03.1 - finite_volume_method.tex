@@ -51,10 +51,10 @@ From the Figure \ref{fig:control_volume}, we can appreciate graphically how the 
                 \node[font=\small] at (\nCV/2*\dX, \n*\dY+\dY/2) {\pgfmathparse{\labelsV[\n]}\pgfmathresult};
             }
 
-        \node[font=\small] at (\nCV/2*\dX, \nCV/2*\dY+\dY/2) {$s$};
-        \node[font=\small] at (\nCV/2*\dX, \nCV/2*\dY-\dY/2) {$n$};
         \node[font=\small] at (\nCV/2*\dX-\dX/2, \nCV/2*\dY) {$w$};
         \node[font=\small] at (\nCV/2*\dX+\dX/2, \nCV/2*\dY) {$e$};
+        \node[font=\small] at (\nCV/2*\dX, \nCV/2*\dY-\dY/2) {$s$};
+        \node[font=\small] at (\nCV/2*\dX, \nCV/2*\dY+\dY/2) {$n$};
 
         \fill[yellow, opacity=0.3] (\nCV/2*\dX-\dX/2, \nCV/2*\dY-\dY/2) rectangle (\nCV/2*\dX+\dX/2, \nCV/2*\dY+\dY/2);
 
@@ -127,8 +127,8 @@ The $L_{shape}$ has been reported for control volume $P$ in Figure \ref{fig:L_sh
                 \node[font=\small] at (\nCV/2*\dX, \n*\dY+\dY/2) {\pgfmathparse{\labelsV[\n]}\pgfmathresult};
             }
 
-        \draw[thick, blue, ->] (\nCV/2*\dX, \nCV/2*\dY)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$u_s$};
-        \draw[thick, blue, ->] (\nCV/2*\dX, \nCV/2*\dY)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$u_s$};
+        \draw[thick, blue, ->] (\nCV/2*\dX, \nCV/2*\dY)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_n$};
+        \draw[thick, blue, ->] (\nCV/2*\dX, \nCV/2*\dY)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_s$};
         \draw[thick, red, ->] (\nCV/2*\dX, \nCV/2*\dY)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_e$};
         \draw[thick, red, ->] (\nCV/2*\dX, \nCV/2*\dY)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_w$};
 
@@ -151,16 +151,15 @@ In particular, the same Figure \ref{fig:L_shape} can be represented using the in
 
     \begin{tikzpicture}[every node/.style={font=\huge}]
 
-        \draw (0, 0) -- (\dX, 0) -- (\dX, \dY) -- (0, \dY) -- cycle;
-
-        \node at (\dX/7, \dY/10) {$i,j$};
+        \draw (0, 0) -- ++(\dX, 0) -- ++(0, \dY) -- ++(-\dX, 0) -- cycle;
 
         \node at (\dX/2, \dY/2) {$P_{i,j}$};
-
-        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$u_{i,j}$};
-        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$u_{i,j-1}$};
         \draw[thick, red, ->] (\dX/2, \dY/2)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i,j}$};
         \draw[thick, red, ->] (\dX/2, \dY/2)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i-1,j}$};
+        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j}$};
+        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j-1}$};
+
+        \node at (\dX/7, \dY/10) {$i,j$};
 
         \draw[yellow,
             opacity=0.3,
@@ -185,3 +184,87 @@ In particular, the same Figure \ref{fig:L_shape} can be represented using the in
 \end{figure}
 
 From Figure \ref{fig:L_shape_index}, we can appreciate how the $L_{shape}$ works well with index notations, and can be useful when working purely with indexes to refer to the variables.
+
+Finally, from Figures \ref{fig:P_ControlVolume} \ref{fig:U_ControlVolume} \& \ref{fig:V_ControlVolume}, we can appreciate how the staggered grid is used to define different control volumes for different variables.
+
+During the rest of the document, we will avoid the specification of the control volume taken in consideration, because it will be chosen according to the variable in consideration.
+If we are working with the pressure, we will refer to the control volume as $P_{CV}$, if we are working with the velocity components, we will refer to the control volume as $U_{CV}$ or $V_{CV}$, and so on.
+
+So for example, when dealing with the $u$ velocity component, we will refer to the control volume as $U_{CV}$, so that:
+
+\begin{itemize}
+    \item $u_P$ will refer to the velocity component centered in the control volume $U_{CV}$. Equivalent to $u_{i,j}$ in the index notation.
+    \item $u_e$ instead, will be the east component with respect to the control volume $U_{CV}$.
+    \item $u_w$ will be the west component with respect to the control volume $U_{CV}$. Spatially, $u_w$ will be centered in the $P_{CV}$.
+\end{itemize}
+
+\begin{figure}[H]
+    \begin{minipage}[b]{0.32\textwidth}
+        \centering
+        \def\nCV{1}
+        \def\dX{3cm}
+        \def\dY{3cm}
+
+        \begin{tikzpicture}
+
+            \draw (0, 0) -- ++(\dX, 0) -- ++(0, \dY) -- ++(-\dX, 0) -- cycle;
+
+            \node at (\dX/2, \dY/2) {$P_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i-1,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j-1}$};
+
+            \node[below, left] at (0, 0) {$P_{CV}$};
+
+        \end{tikzpicture}
+        \caption{$P_{ControlVolume}$ (same as in Figure \ref{fig:L_shape_index})}
+        \label{fig:P_ControlVolume}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.32\textwidth}
+        \centering
+        \def\nCV{1}
+        \def\dX{3cm}
+        \def\dY{3cm}
+
+        \begin{tikzpicture}
+
+            \draw[red] (\dX/2, 0) -- ++(\dX, 0) -- ++(0, \dY) -- ++(-\dX, 0) -- cycle;
+
+            \node at (\dX/2, \dY/2) {$P_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i-1,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j-1}$};
+
+            \node[red, below, left] at (\dX/2, 0) {$U_{CV}$};
+
+        \end{tikzpicture}
+        \caption{$U_{ControlVolume}$}
+        \label{fig:U_ControlVolume}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.32\textwidth}
+        \centering
+        \def\nCV{1}
+        \def\dX{3cm}
+        \def\dY{3cm}
+
+        \begin{tikzpicture}
+
+            \draw[blue] (0, \dY/2) -- ++(\dX, 0) -- ++(0, \dY) -- ++(-\dX, 0) -- cycle;
+
+            \node at (\dX/2, \dY/2) {$P_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i,j}$};
+            \draw[thick, red, ->] (\dX/2, \dY/2)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i-1,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j}$};
+            \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j-1}$};
+
+            \node[blue, below] at (0, \dY/2) {$U_{CV}$};
+
+        \end{tikzpicture}
+        \caption{$V_{ControlVolume}$}
+        \label{fig:V_ControlVolume}
+    \end{minipage}
+\end{figure}

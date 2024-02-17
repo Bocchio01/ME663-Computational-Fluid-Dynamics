@@ -1,0 +1,49 @@
+\section{Schemes}
+\label{sec:schemes}
+
+In this section, we will present the schemes used to solve the previously quasi-discretized equations \ref{eq:INS_steady_2D_discretized_convection} and \ref{eq:INS_steady_2D_discretized_diffusion}.
+
+Those schemes are the "tools" that will allow us to bind the currently considered cell values with its neighbor's cell values.
+This means that at the end of this section, we will have a set of coefficients (based on the scheme adopted) that will be used to assemble the solving matrix of the system.
+
+To further clarify, what we want to achieve is to compute the following functions ($nb$ indicates a generic neighbor cell, one or more cells away from the current cell $P$):
+
+\begin{align}
+    u_P & = f(u_{nb}, v_{nb}, p_{nb}) \\
+    v_P & = f(u_{nb}, v_{nb}, p_{nb})
+\end{align}
+
+As we will see, the result of the schemes will be a set of coefficients that will be used to compute the values of $u_P$ and $v_P$ based on the values of the neighbor cells.
+In particular, the final form of the system will be:
+
+\begin{align}
+    A_P^u u_P & = \sum_{nb} A_{nb}^u u_{nb} + b_P^u \\
+    A_P^v v_P & = \sum_{nb} A_{nb}^v v_{nb} + b_P^v
+    \label{eq:coefficients_form_system}
+\end{align}
+
+Notice how there is no direct correlation between the $u$ and $v$ equations, that are instead coupled through the pressure term $p$.
+
+Using the indices' notation system $(i,j)$ becomes:
+
+\begin{align}
+    (A_P^u)_{i,j} u_{i,j} & = \sum_{nb} (A_{nb}^u)_{i,j} u_{i,j} + (p_{i,j} - p_{i+1,j}) \Delta y \\
+    (A_P^v)_{i,j} v_{i,j} & = \sum_{nb} (A_{nb}^v)_{i,j} v_{i,j} + (p_{i,j} - p_{i,j+1}) \Delta x
+\end{align}
+
+Similar to the approach used in the previous section, we will treat separately the convection and diffusion terms.
+In this way we will obtain two different sets of coefficients, one for the convection term and one for the diffusion term.
+Those coefficients will be then reassembled together to reduce the equations to the final form presented above.
+
+In particular, we will have that the coefficients $A_P^\phi$ and $A_{nb}^\phi$ will be the difference between the convection and diffusion coefficients, given that from Equation \ref{eq:FVM_momentum_x_direction}, we know:
+
+\begin{equation}
+    FVM_{\text{Convection}} - FVM_{\text{Diffusion}} = 0 \rightarrow (A^\phi) = (A^\phi)_{\text{Convection}} - (A^\phi)_{\text{Diffusion}}
+\end{equation}
+
+\textbf{Note:} In the following sections, we will refer to the use of \texttt{Mathematica}.
+The complete notebook used to obtain the final form of the coefficients is left in the \ref{sec:appendix} section of this document.
+
+\input{src/04.1 - convection_schemes.tex}
+\input{src/04.2 - diffusion_schemes.tex}
+\input{src/04.3 - final_coefficients.tex}

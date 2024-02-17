@@ -7,12 +7,12 @@ The set of incompressible Navier-Stokes equations is given by:
 
 \begin{equation*}
     \nabla \cdot {\mathbf{u}} = 0
-    \label{eq:incompressible_navier_stokes_continuity}
+    \label{eq:INS_continuity}
 \end{equation*}
 
 \begin{equation*}
     \rho \frac{\partial \mathbf{u}}{\partial t} + \rho \mathbf{u} \cdot \nabla \mathbf{u} = -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
-    \label{eq:incompressible_navier_stokes_momentum}
+    \label{eq:INS_momentum}
 \end{equation*}
 
 In the rest of the document, the following hypotheses will be considered:
@@ -27,10 +27,12 @@ In the rest of the document, the following hypotheses will be considered:
 Based on these hypotheses, the incompressible Navier-Stokes equations can be simplified and expanded as follows:
 
 \begin{align}
+    \label{eq:INS_continuity_2D}
     \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y}     & = 0                                                                                                                         \\
+    \label{eq:INS_momentum_u_steady_2D}
     \frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y} & = -\frac{\partial p}{\partial x} + \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \\
+    \label{eq:INS_momentum_y_steady_2D}
     \frac{\partial u v}{\partial x} + \frac{\partial v v}{\partial y} & = -\frac{\partial p}{\partial y} + \nu \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right)
-    \label{eq:incompressible_navier_stokes_steady_2D}
 \end{align}
 
 Where $\nu = \frac{\mu}{\rho}$ is the kinematic viscosity and $p = \frac{p}{\rho}$ is the non-dimensional pressure.
