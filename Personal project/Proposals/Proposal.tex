@@ -1,0 +1,48 @@
+\documentclass[titlesec]{araproposal}
+
+\hypersetup{
+pdftitle={ME663 - Computational Fluid Dynamics},
+pdfsubject={Personal project proposal},
+pdfauthor={Tommaso Bocchietti}
+}
+
+\makeglossaries
+
+\newacronym{cfd}{CFD}{Computational Fluid Dynamics}
+\newacronym{scgs}{SCGS}{Symmetric-Coupled Gauss-Seidel}
+\newacronym{simple}{SIMPLE}{Semi-Implicit Method for Pressure-Linked Equations}
+
+\title{SIMPLE implementation and temperature distribution around a 2D geometry}
+
+\piauthor{Tommaso Bocchietti, Department of Mechanical \& Mechatronics Engineering, University of Waterloo}
+
+\contact{Tommaso Bocchietti, \email{tbocchie@uwaterloo.ca}}
+\date{\today}
+
+\newcommand{\semph}[1]{\textbf{\textit{#1}}}
+\newcommand{\para}[1]{\textbf{#1.}\ }
+
+\begin{document}
+
+\maketitle
+
+\abstract{
+  Personal project proposal for the course ME663 - Computational Fluid Dynamics.
+  Implementing \acrshort{simple} algorithm to solve the Navier-Stokes equations for a 2D problem and analyze the temperature field around a 2D geometry.
+}
+
+\keywords{CFD, SIMPLE, Temperature field analysis, 2D problem}
+
+\input{src/01 - introduction.tex}
+\input{src/02 - methods.tex}
+\input{src/03 - expected_results.tex}
+% \input{src/04 - questions_and_answers.tex}
+
+% \appendix
+
+% \newpage
+% % \cite{ara}
+% \bibliographystyle{plainurl}
+% \bibliography{ref}
+
+\end{document}
