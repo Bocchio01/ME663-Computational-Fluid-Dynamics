@@ -1,6 +1,6 @@
 \section{Methods}
 
-The project will be divided into two main parts: the implementation of the \acrshort{simple} algorithm and the analysis of the temperature field around a 2D geometry.
+The project will be divided into two main parts: the implementation of the \acrshort{simple} algorithm and the analysis of the velocity field around a 2D geometry.
 
 \subsection{SIMPLE algorithm}
 
@@ -11,20 +11,16 @@ The \acrshort{simple} algorithm will be implemented following the guidelines pro
 
 The code will be tested using the same test cases used for the \acrshort{scgs} algorithm, and the results will be compared with the ones obtained with the \acrshort{scgs} algorithm.
 
-\subsection{Temperature field analysis}
+\subsection{Velocity field analysis}
 
-The temperature field analysis will be performed using the same codebase and the \acrshort{simple} algorithm.
+The velocity field analysis will be performed using the same codebase and the \acrshort{simple} algorithm.
 
-Starting from the previously implemented code, the temperature field will be added to the solver, and the code will be tested against some known test cases.
-
-If not treated during the course, the heat equation will be implemented starting from online resources.
-
-Finally, we will use our code to answer the question of interest to us: \emph{Investigating the flow velocity and temperature distribution around a pillar on a windy day to optimize well-being by identifying the most suitable positions to avoid exposure to cold temperatures.}
+We will use our code to answer the question of interest to us: \emph{Investigating the distribution of flow velocity around a pillar during windy conditions to enhance personal comfort by determining the optimal position that reduces wind exposure.}
 
 The problem will make use of multiple simplifying assumptions, so to be simple enough to be modeled within our 2D solver, but at the same time complex enough to analyze a real world problem.
 
 As a real world scenario where our analysis could be useful, we can think of a person waiting for a bus or a train on a windy day at a station with only a pillar that can be used as a shield.
-At the end of the project, we will be able to provide a map of the temperature distribution around the pillar, based on the wind speed and direction.
+At the end of the project, we will be able to provide a map of the flow velocity distribution around the pillar, based on the wind speed and direction.
 Eventually, multiple simple geometry will be tested (e.g. a circular pillar, a square pillar, etc.) and the results will be compared.
 
 \begin{figure}[H]
