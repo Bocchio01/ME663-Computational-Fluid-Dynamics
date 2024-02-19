@@ -27,6 +27,7 @@
 \RequirePackage{microtype}
 \RequirePackage{enumitem}
 \RequirePackage{amsthm}
+\RequirePackage[T1]{fontenc}
 
 \ifcsname @loadtitlesec\endcsname%
 \RequirePackage{titlesec}

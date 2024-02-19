@@ -36,7 +36,7 @@
     keywordstyle      = \bfseries,
     commentstyle      = \rmfamily\itshape,
     stringstyle       = \ttfamily,
-    backgroundcolor   = \color{white}
+    backgroundcolor   = \color{white},
     numberstyle       = \tiny\color{codegray},
     flexiblecolumns,
     frame             = single,
