@@ -18,7 +18,7 @@
 
 \LoadClass[11pt]{article}
 
-\RequirePackage[letterpaper, margin=1in]{geometry}
+\RequirePackage[a4paper, margin=20mm]{geometry}
 \RequirePackage{charter}
 \RequirePackage[numbib]{tocbibind}
 \RequirePackage{hyperref}
@@ -28,6 +28,9 @@
 \RequirePackage{enumitem}
 \RequirePackage{amsthm}
 \RequirePackage[T1]{fontenc}
+\RequirePackage{float}
+\RequirePackage{graphicx}
+\RequirePackage[acronym]{glossaries}
 
 \ifcsname @loadtitlesec\endcsname%
 \RequirePackage{titlesec}

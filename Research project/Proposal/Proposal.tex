@@ -1,5 +1,12 @@
 \documentclass[titlesec]{araproposal}
 
+\usepackage{background}
+\backgroundsetup{
+  color=gray,
+  opacity=0.2,
+  contents=Preliminary
+  }
+
 % Examples
 % Airborne Coronavirus Inactivation by Far-UVC Using a Coupled Radiation-CFD Model
 % City Bus Cabin Air Monitoring and Conditioning for COVID19
@@ -7,7 +14,13 @@
 % Modelling of Air Distribution in Terraced Lecture Halls at the University of Waterloo
 % Towards Safer Work Spaces: The Viability of Portable Air Purifiers
 
-\title{Feasibility Investigation of Next-Generation Injectors using CFD Analysis}
+\hypersetup{
+  pdftitle={ME663 - Computational Fluid Dynamics},
+  pdfsubject={Proposal for research project},
+  pdfauthor={Tommaso Bocchietti}
+}
+
+\title{Feasibility Investigation of Next-Generation Fuel Injectors using CFD Analysis}
 
 \piauthor{Tommaso Bocchietti, Department of Mechanical \& Mechatronics Engineering, University of Waterloo}
 % \copiauthorB{Co-PI Name, Title, Department Name, University Name}
@@ -39,8 +52,8 @@
 \input{src/01 - objectives_and_impact}
 \input{src/02 - background}
 \input{src/03 - research_plan_and_methodology}
-% \input{src/04 - preliminary_results}
-\input{src/04 - deliverables}
+\input{src/04 - preliminary_results}
+\input{src/05 - deliverables}
 
 \appendix
 
