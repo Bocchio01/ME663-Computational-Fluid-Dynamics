@@ -4,3 +4,4 @@ Mathematica
 PDE
 uds
 Vanka
+Peclet
