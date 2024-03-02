@@ -2,76 +2,64 @@
 \label{sec:results}
 
 The \acrshort{scgs} algorithm has been implemented in \texttt{C} and tested on a simple 2D lid-driven cavity flow problem.
-The results have been compared with the ones reported in Ghia et al. \cite{Ghia1982HighReSF}.
 
-\textbf{Unfortunately the results are not as expected due to (probably but not certainty) a bug in the code, which is currently under investigation.}
+In the following we are going to compare the results obtained using our code with the ones reported in Ghia et al. \cite{Ghia1982HighReSF}.
 
-In the following, we will compare the result obtained using our code with the ones reported in Ghia et al. \cite{Ghia1982HighReSF} in the case of:
+\textbf{
+    Note: we will see that our code has some issues related to convergence and stability.
+    This affect the under-relaxation factors required to stabilize the solution that have to be decreased to very low values (e.g. $\alpha_u = 0.01$ and $\alpha_v = 0.01$ or less).
+    This is not a good practice and it's not a solution to the problem. We are currently investigating the issue and we will update the codebase as soon as possible.
+}
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|c|c|}
-        \hline
-        \textbf{Variable} & \textbf{Value} \\ \hline
-        Re                & 1000           \\
-        Nx                & 129            \\
-        Ny                & 129            \\
-        $\alpha_u$        & 0.8            \\
-        $\alpha_v$        & 0.8            \\
-        Convection scheme & UDS            \\
-        Diffusion scheme  & 2nd order      \\\hline
-    \end{tabular}
-    \caption{Parameters used for the comparison.}
-    \label{tab:parameters_for_comparison}
-\end{table}
+\input{src/07.1 - ghia_exact_solution}
+\input{src/07.2 - comparison_with_ghia}
+\input{src/07.3 - solution_07}
+\input{src/07.4 - convergence_analysis}
 
-For simplicity, in Figure \ref{fig:ghia_solution_Re1000} we report the solution from Ghia et al. \cite{Ghia1982HighReSF} for the lid-driven cavity flow at $Re = 1000$, which we aim to reproduce.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.9\textwidth]{./img/ghia_solution_Re1000}
-    \caption{Solution from Ghia et al. \cite{Ghia1982HighReSF} for the lid-driven cavity flow at $Re = 1000$.}
-    \label{fig:ghia_solution_Re1000}
-\end{figure}
+\subsection{Final remarks}
 
-After running the \acrshort{scgs} algorithm, we obtained the solution reported in Figure \ref{fig:scgs_solution_Re1000}.
+As we have seen, our code has some issues related to convergence and stability.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.6\textwidth]{./img/scgs_solution_Re1000}
-    \caption{Solution obtained using the \acrshort{scgs} algorithm for the lid-driven cavity flow at $Re = 1000$.}
-    \label{fig:scgs_solution_Re1000}
-\end{figure}
+In particular, in order to have a convergent solution, we have to decrease the under-relaxation factors to very low values (e.g. $\alpha_u = 0.01$ and $\alpha_v = 0.01$ or less).
 
-As it is easy to observe from the streamline plots, the solution obtained using our code is not in agreement with the one reported by Ghia.
+By debugging through the code, we can clearly see that this is due to the low or absent diagonal dominance of the coefficient matrix (Vanka's matrix).
 
-In particular, the eddies at the bottom corners of the cavity are not present in our solution, and the overall distribution of the streamlines is basically symmetrical which intuitively is not correct.
+Moreover, by deepening the problem, we have found that the convergence of the algorithm is ensured only if the following condition is satisfied:
 
-Similar considerations can be made by comparing numerically the velocity profiles between the two solutions.
+\begin{equation}
+    |a_{ii}| \geq \sum_{j \neq i} |a_{ij}| \quad \forall i = 1, 2, 3, 4
+    \label{eq:diagonal_dominance}
+\end{equation}
 
-From Figure \ref{fig:velocity_profiles_Re1000_comparison} it's clearly visible how the two solutions are not in agreement.
+Where $a_{ij}$ are the elements of the coefficient matrix.
 
-\begin{figure}[H]
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{./img/velocity_profiles_Re1000_u}
-        \caption{$u(y) @ x/L_x = 0.5$}
-        \label{fig:velocity_profiles_Re1000_u}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{./img/velocity_profiles_Re1000_v}
-        \caption{$v(x) @ y/L_y = 0.5$}
-        \label{fig:velocity_profiles_Re1000_v}
-    \end{minipage}
-    \caption{Comparison of the velocity profiles.}
-    \label{fig:velocity_profiles_Re1000_comparison}
-\end{figure}
+In the \acrshort{scgs} algorithm the coefficient matrix is in the form of Equation \ref{eq:vanka_matrix}, so we can states that the diagonal dominance is ensured only if the following condition is satisfied:
 
-We also have tried to run the code with different parameters, but the results are always not in agreement with the ones reported by Ghia et al. \cite{Ghia1982HighReSF}.
+\begin{equation}
+    |a_{ii}| \geq |a_{5i}| \quad \forall i = 1, 2, 3, 4
+\end{equation}
 
-\paragraph{Note}
+For how the system has been constructed, we know that:
 
-We will try to fix the bug and update the results as soon as possible.
-Not for the assegnment or the mark related to it, but for the sake of the project itself (it's useless to have a code that doesn't work as expected\dots).
+\begin{align}
+    a_{ii} & = f(\nu, \alpha_u, \alpha_v) \\
+    a_{5i} & = f(Nx, Ny)
+\end{align}
+
+Where $f$ indicate a generic function.
+
+Based on the equations and derivations done in the previous sections, we have that diagonal dominance is compromised when:
+
+\begin{itemize}
+    \item The grid is not fine enough (i.e. $Nx$ and $Ny$ are low) $\Rightarrow a_{5i} = \text{Cell sixe}$ is high
+    \item The under-relaxation factors are high $\Rightarrow a_{ii} = A_p^\phi / \alpha_\phi$ is low
+    \item The viscosity is low $\Rightarrow$ Diffusion term is low $\Rightarrow a_{ii}$ is low
+\end{itemize}
+
+When Equation \ref{eq:diagonal_dominance} is not satisfied once, then the algorithm will diverge imposing too high corrections to the state variables, causing the Convective terms to become too high at the next iteration (or neighboring cells).
+
+\vspace{1em}
+
+\textbf{Note: we know this should not append, but as of today we still haven't found the problem in our code.}
+

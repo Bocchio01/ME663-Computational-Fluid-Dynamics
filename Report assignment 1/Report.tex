@@ -69,8 +69,9 @@ pdfauthor={Tommaso Bocchietti}
 
 \clearpage
 \appendix
-\section{Mathematica code}
 \label{sec:appendix}
+
+\section{Mathematica code}
 
 Here follows the \texttt{Mathematica} notebook used for symbolic analysis of the discretized schemes.
 
@@ -80,5 +81,33 @@ Here follows the \texttt{Mathematica} notebook used for symbolic analysis of the
     caption=Mathematica notebook used for symbolic analysis of the discretized schemes.,
 ]{files/Mathematica.txt}
 
+
+\clearpage
+\section{C code}
+The complete codebase is available on GitHub at \url{https://github.com/Bocchio01/CFD_Simulation_Engine}, along with its technical documentation.
+
+\lstinputlisting[
+    style=C,
+    language=C,
+    caption=SCGS Core algorithm implementation in C.,
+]{files/SCGS.c}
+
+\lstinputlisting[
+    style=C,
+    language=C,
+    caption=SCGS Boundary Conditions implementation in C.,
+]{files/SCGSBC.c}
+
+\lstinputlisting[
+    style=C,
+    language=C,
+    caption=Convection Schemes implementation in C.,
+]{files/convection.c}
+
+\lstinputlisting[
+    style=C,
+    language=C,
+    caption=Diffusion Schemes implementation in C.,
+]{files/diffusion.c}
 
 \end{document}
