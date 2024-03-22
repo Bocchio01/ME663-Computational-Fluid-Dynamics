@@ -1,66 +1,50 @@
 \documentclass[titlesec]{araproposal}
 
-\usepackage{background}
-\backgroundsetup{
-  color=gray,
-  opacity=0.2,
-  contents=Preliminary
-  }
-
-% Examples
-% Airborne Coronavirus Inactivation by Far-UVC Using a Coupled Radiation-CFD Model
-% City Bus Cabin Air Monitoring and Conditioning for COVID19
-% CFD Tool to Facilitate the Safe Re-Opening of Indoor Gyms
-% Modelling of Air Distribution in Terraced Lecture Halls at the University of Waterloo
-% Towards Safer Work Spaces: The Viability of Portable Air Purifiers
+\newcommand{\semph}[1]{\textbf{\textit{#1}}}
+\newcommand{\para}[1]{\textbf{#1.}\ }
 
 \hypersetup{
-  pdftitle={ME663 - Computational Fluid Dynamics},
-  pdfsubject={Proposal for research project},
-  pdfauthor={Tommaso Bocchietti}
+    pdftitle={ME663 - Computational Fluid Dynamics},
+    pdfsubject={Proposal for research project},
+    pdfauthor={Tommaso Bocchietti}
 }
+\bibliographystyle{abbrv}
 
-\title{Feasibility Investigation of Next-Generation Fuel Injectors using CFD Analysis}
-
+\title{Designing an Ammonia-compatible Fuel Injector for retrofitting current Internal Combustion Engines using CFD}
 \piauthor{Tommaso Bocchietti, Department of Mechanical \& Mechatronics Engineering, University of Waterloo}
 % \copiauthorB{Co-PI Name, Title, Department Name, University Name}
-
 \contact{Tommaso Bocchietti, \email{tbocchie@uwaterloo.ca}}
-\date{\today}
-
-\newcommand{\semph}[1]{\textbf{\textit{#1}}} % Strong emphasis
-\newcommand{\para}[1]{\textbf{#1.}\ }
+\date{March 20, 2024}
 
 \begin{document}
 
 \maketitle
 
 \abstract{
-  Nowadays, the importance of reducing emissions and increasing fuel efficiency has become even more crucial than ever.
-  Some alternative technologies to traditional gasoline and diesel engines have been developed, such as electric vehicles or hydrogen fuel cells, but the transition to these new technologies is slow and expensive, and it is likely that internal combustion engines will be used for a long time to come.
+    The continuous emission of greenhouse gases from internal combustion engines is a major concern for the environment.
+    The transportation sector is the second-largest source of greenhouse gas emissions in the world, preceded only by the energy sector.
 
-  In this context, the development of new technologies that can be used in combination with existing engines structure is critical.
-  The possibility of using alternative fuel sources, such as ammonia or dimethyl ether, is particularly attractive.
-  These fuels have the potential to reduce emissions and increase fuel efficiency, but they require the development of new injectors that can handle their specific properties.
+    In the past few years, some alternative to fossil fuel have been proposed, such as the adoption of electric vehicles, the use of methane, or the use of hydrogen.
+    However, all of these alternatives have some drawbacks, such as the needs of a huge infrastructure to support the use of electric vehicles, or the high emissions of $\mathrm{CO_2}$ from methane combustion, or the low energy density of gaseous hydrogen.
 
-  In this research we will not focus on fuel engineering per se, but on the feasibility of a new generation of fuel injectors that can be fitted to existing engines and that can handle these alternative fuel sources.
-  To do this, the use of Computational Fluid Dynamics (CFD) simulations will be critical, as it will allow us to study the interaction between fluid dynamics and the chemical reactions occurring within the injector in an efficient and cost-effective manner.
+    Ammonia instead is a promising alternative fuel, with a considerable energy density and no $\mathrm{CO_2}$ emissions.
+    However, the use of ammonia requires the development of new mechanical components that can handle its specific properties.
+
+    This research project aims to develop a new fuel injector suitable for ammonia, so that it can be retrofitted in existing Internal Combustion Engines (ICEs).
+    The project will use Computational Fluid Dynamics (CFD) simulations to model the spray of Ammonia inside the combustion chamber, giving insights on the design of the new fuel injector.
 }
 
-\keywords{Fuel injectors design, Computational Fluid Dynamics, Alternative fuel sources}
+\keywords{Ammonia, Fuel Injector Design, Internal Combustion Engines, Computational Fluid Dynamics}
 
 \input{src/01 - objectives_and_impact}
 \input{src/02 - background}
 \input{src/03 - research_plan_and_methodology}
-\input{src/04 - preliminary_results}
-\input{src/05 - deliverables}
+\input{src/04 - deliverables}
 
 \appendix
 
 % \newpage
-% \cite{ara}
-% \bibliographystyle{plainurl}
-% \bibliography{ref}
+\bibliography{references}
 
 \end{document}
 

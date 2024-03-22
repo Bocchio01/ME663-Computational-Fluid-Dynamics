@@ -1,11 +1,21 @@
 \section{Background}
 \label{sec:background}
 
-What's has been done so far regarding the development of innovative fuel injection system.
+So far, just some "entry-level" investigation on the feasibility of using Ammonia as a fuel has been done.
+In particular, we would like to mention the work of:
 
 \begin{itemize}
-    \item Understanding the combustion process in internal combustion engines.
-    \item Optimizing the fuel injection system to improve the combustion process.
-    \item We have always focused on the development of fuel injectors that can handle traditional fuels (gasoline, diesel, etc). They are easy to ignite allowing for an easier design process.
-    \item The use of modern CFD simulations, supported by more powerful computers and experimental data to validate the simulations, may allow us to increase the precision of the modelling and opening the possibility of difficult-to-ignite fuels (such as Ammonia).
+    \item \textbf{R. Pelé et al.\cite{pele}}: a visual inspection of the spray geometry of Ammonia has been conducted, showing multiple similarity with the spray of gasoline and diesel under various conditions of temperature and pressure of air. Some empirical correlations have been proposed to predict the penetration and angle of the spray, but no CFD simulations have been conducted.
+    \item \textbf{K.D.K.A. Somarathne et al.\cite{somarathne}}: a first CFD modelling of a simple non-reactive condition of the spray of Ammonia has been conducted. A particular attention to the flash-boiling\footnotemark[1] condition was given, and the results showed a good agreement with the experimental data.
+    \item \textbf{J. Wang, F. Dalla Barba\cite{wang-dalla-barba}}: a more advanced CFD simulation of the spray of Ammonia (still in a non-reactive condition) has been conducted. The authors proposed the parcel model\footnotemark[2] strategy to reduce the computational cost of the simulation, while still obtaining a good agreement with the expected results. Coarsening mesh and the use of the Eulerian-Lagrangian approach were also proposed to further reduce the computational cost.
 \end{itemize}
+
+\footnotetext[1]{Flash-boiling is the process of a liquid turning into a gas when its pressure is suddenly reduced\cite{flash-boiling}.}
+
+\footnotetext[2]{The parcel model is a strategy to reduce the computational cost of the simulation, by grouping particles with similar properties such as diameter, velocity, position, shape and solving the equations for the group instead of for each particle.}
+
+Moreover, studies from E.C. Okafor et al.\cite{okafor} have also demonstrated the feasibility of using Ammonia in a turbine engine, showing that the combustion of Ammonia can be stable and efficient; while A. Hayakawa et al.\cite{hayakawa} demonstrated the feasibility of a co-firing strategy of Ammonia with Hydrogen and air.
+
+The main challenges in the use of Ammonia as a fuel are the high ignition temperature (around $650^\circ C$), the slow flame speed, and the possible formation of $\mathrm{NO_x}$ emissions.
+
+However, we believe that the importance of the use of Ammonia as a fuel is so high that it is worth to invest time and resources in the development of a new fuel injector that can handle the specific properties of Ammonia and that can be retrofitted in existing ICEs.

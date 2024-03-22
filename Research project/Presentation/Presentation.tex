@@ -1,9 +1,5 @@
 \documentclass[9pt]{beamer}
 
-\usetheme{metropolis}
-\geometry{paperwidth=140mm, paperheight=105mm}
-\setbeamertemplate{frame footer}{ME663 - Computational Fluid Dynamics}
-
 \usepackage{appendixnumberbeamer}
 \usepackage{booktabs}
 \usepackage[scale=2]{ccicons}
@@ -13,6 +9,12 @@
 \usepackage{chemfig}
 
 \usepgfplotslibrary{dateplot}
+\pdfstringdefDisableCommands{\def\translate#1{#1}}
+\geometry{paperwidth=140mm, paperheight=105mm}
+\usetheme{metropolis}
+\bibliographystyle{abbrv}
+\setbeamertemplate{frame footer}{ME663 - Computational Fluid Dynamics}
+
 \usetikzlibrary{shapes, arrows}
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=red!30]
 \tikzstyle{io} = [trapezium, trapezium stretches=true, trapezium left angle=70, trapezium right angle=110, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
@@ -20,8 +22,8 @@
 \tikzstyle{decision} = [diamond, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
-\title{Next-Generation Fuel in Internal Combustion Engine: Ammonia}
-\subtitle{Designing a Suitable Fuel Injector for Ammonia Using CFD}
+\title{Designing a Suitable Fuel Injector for Ammonia Using CFD}
+\subtitle{Next-Generation Fuel in Internal Combustion Engine}
 \date{March 20, 2024}
 \author{Tommaso Bocchietti}
 \institute{University of Waterloo}
@@ -29,19 +31,23 @@
 
 \begin{document}
 
-\maketitle
+\maketitle\begin{frame}{Agenda}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents[hideallsubsections]
+\end{frame}
 
 \input{src/01 - motivations}
 \input{src/02 - research_focus}
 \input{src/03 - prior_studies}
 \input{src/04 - methodology}
 \input{src/05 - expected_results}
-% \input{src/06 - extra_slides}
+\input{src/06 - extra_slides}
+
+\appendix
 
 \begin{frame}[allowframebreaks]{References}
     \nocite{*}
     \bibliography{references}
-    \bibliographystyle{abbrv}
 \end{frame}
 
 \begin{frame}[standout]

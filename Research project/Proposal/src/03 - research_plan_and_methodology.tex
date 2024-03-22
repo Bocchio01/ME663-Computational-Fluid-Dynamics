@@ -1,10 +1,59 @@
 \section{Research Plan and Methodology}
 \label{sec:research_plan_and_methodology}
 
-The research plan is divided into three main stages:
+Our research project aims to develop a new fuel injector suitable for Ammonia, so that it can be retrofitted in existing ICEs.
+
+We will make use Computational Fluid Dynamics (CFD) simulations as a tool to simulate the conditions of the spray of Ammonia in the combustion chamber, allowing us to test different designs of the fuel injector without the need of building a physical prototype, which would be time-consuming and expensive.
+
+We are conscious that the development of a new fuel injector is a complex task, and the modelling of Ammonia kinematics and combustion is not trivial.
+For this reason, we have divided the research project into three major phases, each one with its own specific objectives and expected results.
+
+\subsection{Phase 1: CFD Modelling of the Spray of Ammonia in a Non-Reactive Condition}
+
+The first phase of the research project aims to recreate and possibly improve the CFD model that can be found in the literature, which simulates the spray of Ammonia in a non-reactive condition.
+In particular, at the end of the phase we expect to have a CFD model that can accurately predict the characteristics of the spray of Ammonia such as droplet size, velocity, distribution, penetration\dots, given the environmental conditions and domain restrictions.
+
+In particular, we can further divide the objectives of this phase into the following tasks:
 
 \begin{enumerate}
-    \item Feasibility study: supposing that we will be able to design a fuel injector with no constraints, are those alternative fuels feasible to be used in internal combustion engines? What are their characteristics when it comes to ignite them under a controlled environment? $\rightarrow$ Understand the chemical and physical properties of the alternative fuels and their combustion process.
-    \item Design and development of the fuel injector: based on the results of the feasibility study, modelling and simulation of diverse fuel injectors designs. $\rightarrow$ Use CFD simulations to optimize the fuel injector design.
-    \item Experimental validation: once the simulations are completed, we will build a prototype and test it in a controlled environment. $\rightarrow$ Compare the experimental results with the simulations. Eventually, rerun CFD simulations to improve the model (and the design).
+    \item \textbf{Literature Review:} a deep review of the state of the art about the modelling of the spray of Ammonia is required before starting the development of our CFD model. This will allow us to understand the limitations of the existing models and to identify the key parameters that need to be considered.
+    \item \textbf{Development \& Validation of the CFD Model:} the development of the CFD model will be carried out using commercial software as \texttt{OpenFOAM} and \texttt{ANSYS Chemkin}. The model will be validated against the experimental data available in the literature. Based on the information already available, we can already hypothesize that the model will be based on the Eulerian-Lagrangian approach, where the Eulerian solver is dedicated to advance in time the flow field, while the Lagrangian solver is used to evaluate the mass, momentum and energy equations of the single parcel\footnotemark[2].
 \end{enumerate}
+
+Once our model is validated against the experimental data available in the literature, we can proceed to the next phase of the research project.
+
+\subsection{Phase 2: CFD Modelling of the Spray of Ammonia in a Reactive Condition}
+
+The second phase of the research project aims to extend the CFD model developed in the previous phase to a reactive condition.
+
+Given that, to our current knowledge, no experimental data exists about the reactive condition of Ammonia spray in literature, we will need to perform an experimental campaign to gather the necessary data to validate our model.
+To do so, we will try to replicate the conditions of the combustion chamber of an ICE, and measure the quantity of interest such as the temperature, pressure, and flow rate.
+This implies the use of a test bench equipped with (at least) a combustion chamber, a fuel injector, and a spark plug, as well as the necessary sensors and data acquisition systems.
+
+In particular, we can further divide the objectives of this phase into the following tasks:
+
+\begin{enumerate}
+    \item \textbf{Experimental setup:} the experimental setup will be designed to replicate the conditions of the combustion chamber of an ICE. At first, an open domain will be used with an external spark plug to ignite the Ammonia. At the second stage, the setup will be enclosed to further replicate the conditions of a real combustion chamber.
+    \item \textbf{Data acquisition \& analysis:} the experimental campaign will be carried out to gather the necessary data to validate our CFD model. The data will be processed, analyzed and compared with the results of the CFD simulations. In the analysis phase, a use of Machine Learning algorithms can be considered to increase the possibility to find correlations across the data set and improve the accuracy of the model.
+\end{enumerate}
+
+As in the first phase of the project, the model developing will be carried out using commercial software as \texttt{OpenFOAM} and \texttt{ANSYS Chemkin}.
+
+Once our model for reactive condition is ready and validated, we can proceed to the next phase of the research project.
+
+\subsection{Phase 3: Design and Testing of the New Fuel Injector}
+
+The third phase of the research project aims to design the new fuel injector suitable for Ammonia, and to test it in a real ICE.
+
+The design of the fuel injector will be based on the results of the CFD simulations, and it will be carried out using the CAD software \texttt{CATIA V5}.
+
+Our driving motivation here is to design a fuel injector that can be retrofitted in existing ICEs, so that the transition from fossil fuels to Ammonia can be as smooth as possible.
+
+In particular, we can further divide the objectives of this phase into the following tasks:
+
+\begin{enumerate}
+    \item \textbf{Design of the Fuel Injector:} the design of the fuel injector will be based on the results of the CFD simulations. As domain, we will consider a Direct Injection system, where the fuel injector spray the Ammonia directly into the combustion chamber. Depending on the results from previous phases of the project, the design will start from the assumption that no other parameter of the ICE has to be modified (such as the pressure of the inlet and exhaust valves, the compression ratio, the ignition timing\dots). In case of evidence that some parameters have to be modified, we will also propose at the end of the project a set of guidelines to retrofit in existing ICEs.
+    \item \textbf{Testing of the Fuel Injector:} finally, a first prototype of the fuel injector will be built and tested in a real ICE. Using a similar setup as the one used in the experimental campaign of the second phase, we will measure the performance of the fuel injector in terms of spray characteristics, combustion efficiency, and emissions. The data will be processed, analyzed and compared with the prevision of the CFD simulations.
+\end{enumerate}
+
+At the end of this phase, we expect to have a new fuel injector suitable for Ammonia, and a set of guidelines that can be used to retrofit existing ICEs.
