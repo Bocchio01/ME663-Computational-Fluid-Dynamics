@@ -1,0 +1,58 @@
+\documentclass[9pt]{beamer}
+
+\usepackage{appendixnumberbeamer}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{graphics}
+\usepackage{chemfig}
+
+\usepgfplotslibrary{dateplot}
+\pdfstringdefDisableCommands{\def\translate#1{#1}}
+\geometry{paperwidth=140mm, paperheight=105mm}
+\usetheme{metropolis}
+\bibliographystyle{abbrv}
+\setbeamertemplate{frame footer}{ME663 - Computational Fluid Dynamics}
+
+\usetikzlibrary{shapes, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium stretches=true, trapezium left angle=70, trapezium right angle=110, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=2cm, minimum height=1cm, text centered, text width=2cm, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=2cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\title{SIMPLE implementation and study of velocity field around a 2D geometry}
+\subtitle{Personal Project}
+\date{April 3, 2024}
+\author{Tommaso Bocchietti}
+\institute{University of Waterloo}
+\titlegraphic{\hfill\includegraphics[height=1.5cm]{pdf/UniversityOfWaterloo_logo_horiz_pms.pdf}}
+
+\begin{document}
+
+\maketitle\begin{frame}{Agenda}
+    \setbeamertemplate{section in toc}[sections numbered]
+    \tableofcontents[hideallsubsections]
+\end{frame}
+
+\input{src/01 - introduction}
+\input{src/02 - methodology}
+\input{src/03 - expected_results}
+
+\appendix
+
+\begin{frame}[allowframebreaks]{References}
+    \nocite{*}
+    \bibliography{references}
+\end{frame}
+
+\begin{frame}[standout]
+    Questions?
+\end{frame}
+
+\begin{frame}[standout]
+    Thank you!
+\end{frame}
+
+\end{document}
