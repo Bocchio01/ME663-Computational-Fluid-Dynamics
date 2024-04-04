@@ -1,0 +1,50 @@
+\documentclass[a4paper,10pt,unnumberedsections,twoside]{LTJournalArticle}
+% https://www.latextemplates.com/template/journal-article
+% To add a 2 columns span environment, add * to the environment name (figure*, table*, etc.)
+
+\usepackage{float}
+% \usepackage{background}
+% \backgroundsetup{
+%   color=gray,
+%   opacity=0.2,
+%   contents=Preliminary
+% }
+
+\hypersetup{
+pdftitle={ME663 - Computational Fluid Dynamics},
+pdfsubject={Personal project report},
+pdfauthor={Tommaso Bocchietti}
+}
+
+\addbibresource{references.bib}
+
+\runninghead{Personal project report}
+
+\footertext{ME663 - Computational Fluid Dynamics}
+
+\setcounter{page}{1}
+
+\title{SIMPLE implementation and study of velocity field around a 2D geometry}
+
+\author{
+	Tommaso Bocchietti\textsuperscript{1,2}\thanks{\textbf{Final revision:} April ??, 2024}
+}
+
+\date{\footnotesize
+\textsuperscript{\textbf{1}}Department of Mechanical \& Mechatronics Engineering, University of Waterloo\\
+\textsuperscript{\textbf{2}}Dipartimento di Meccanica, Politecnico di Milano
+}
+
+\renewcommand{\maketitlehookd}{
+	\begin{abstract}
+		Abstract text.
+	\end{abstract}
+}
+
+\begin{document}
+
+\maketitle
+
+\printbibliography
+
+\end{document}

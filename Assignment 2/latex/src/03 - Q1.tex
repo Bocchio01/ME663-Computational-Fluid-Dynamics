@@ -1,0 +1,59 @@
+\section{(Q1) - Question \#1}
+\label{sec:Q1}
+
+Derive the Jacobian matrix $A = \frac{\partial F}{\partial U}$ given:
+
+\begin{equation}
+    U = \begin{bmatrix}
+        \rho   \\
+        \rho u \\
+        \rho E
+    \end{bmatrix}, \quad
+    F = \begin{bmatrix}
+        \rho u       \\
+        \rho u^2 + p \\
+        (\rho E + p) u
+    \end{bmatrix}
+\end{equation}
+
+where $\rho$ is the density, $u$ is the velocity, $E$ is the total energy, and $p$ is the pressure.
+
+\subsection{Solution}
+
+The Jacobian matrix $A$ is defined as:
+
+\begin{equation}
+    A = \frac{\partial F}{\partial U} = \begin{bmatrix}
+        \frac{\partial F_1}{\partial U_1} & \frac{\partial F_1}{\partial U_2} & \frac{\partial F_1}{\partial U_3} \\
+        \frac{\partial F_2}{\partial U_1} & \frac{\partial F_2}{\partial U_2} & \frac{\partial F_2}{\partial U_3} \\
+        \frac{\partial F_3}{\partial U_1} & \frac{\partial F_3}{\partial U_2} & \frac{\partial F_3}{\partial U_3}
+    \end{bmatrix}
+    \label{eq:jacobian_matrix}
+\end{equation}
+
+where $F_i$ is the $i$-th component of the vector $F$ and $U_i$ is the $i$-th component of the vector $U$.
+
+Before proceeding with the derivation of the Jacobian matrix, it's useful to express the components of the vector $F$ in terms of the components of the vector $U$:
+
+\begin{equation}
+    F = \begin{bmatrix}
+        \rho u       \\
+        \rho u^2 + p \\
+        (\rho E + p) u
+    \end{bmatrix} = \begin{bmatrix}
+        U_2                                                                       \\
+        \frac{U_2^2}{U_1} + (\gamma - 1) \left( U_3 - \frac{U_2^2}{2 U_1} \right) \\
+        \frac{U_2}{U_1} \left( U_3 + (\gamma - 1) \left( U_3 - \frac{U_2^2}{2 U_1} \right) \right)
+    \end{bmatrix}
+\end{equation}
+
+Now, we can proceed with the derivation of the Jacobian matrix $A$ based on its definition in Equation \ref{eq:jacobian_matrix}:
+
+\begin{equation}
+    A = \frac{\partial F}{\partial U} = \begin{bmatrix}
+        0                             & 1                                        & 0          \\
+        \frac{\gamma - 3}{2} u^2      & (3 - \gamma) u                           & \gamma - 1 \\
+        (\gamma - 1) u^3 - \gamma u E & -\frac{3}{2} (\gamma - 1) u^2 + \gamma E & \gamma u   \\
+    \end{bmatrix}
+\end{equation}
+
