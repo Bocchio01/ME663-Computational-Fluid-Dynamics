@@ -1,0 +1,102 @@
+\section{(Q2) - Question \#2}
+\label{sec:Q2}
+
+Derive the right eigenvectors $r_1$, $r_2$, and $r_3$ for the matrix $A$ (Equation \ref{eq:matrix_A}).
+Note that:
+
+\begin{equation}
+    Q_A = \begin{bmatrix}
+        r_1 & r_2 & r_3
+    \end{bmatrix}
+\end{equation}
+
+\subsection{Solution}
+
+The right eigenvectors $r_1$, $r_2$, and $r_3$ of the matrix $A$ are defined as the eigenvectors that satisfy the following equation:
+
+\begin{equation}
+    A Q_A = Q_A \Lambda
+\end{equation}
+
+where $\Lambda$ is the diagonal matrix of the eigenvalues of $A$ and $Q_A$ is the matrix of the right eigenvectors of $A$.
+
+To solve the eigenvalues and eigenvectors problem, we can use its characteristic equation:
+
+\begin{equation}
+    \text{det}(A - \lambda I) = 0
+\end{equation}
+
+where $I$ is the identity matrix.
+
+The characteristic equation for the matrix $A$ is:
+
+\begin{equation}
+    \text{det}(A - \lambda I) = \text{det}\left( \begin{bmatrix}
+            -\lambda                      & 1                                        & 0                  \\
+            \frac{\gamma - 3}{2} u^2      & (3 - \gamma) u - \lambda                 & \gamma - 1         \\
+            (\gamma - 1) u^3 - \gamma u E & -\frac{3}{2} (\gamma - 1) u^2 + \gamma E & \gamma u - \lambda
+        \end{bmatrix} \right) = 0
+\end{equation}
+
+Expanding the determinant, we get:
+
+\begin{equation}
+    -\lambda \left[ (3 - \gamma) u - \lambda \right] \left[ \gamma u - \lambda \right] - \frac{\gamma - 3}{2} u^2 \left[ \gamma u - \lambda \right] - (\gamma - 1) \left[ (\gamma - 1) u^3 - \gamma u E \right] = 0
+\end{equation}
+
+Solving the characteristic equation, we find the eigenvalues of the matrix $A$:
+
+\begin{equation}
+    \Lambda = \begin{bmatrix}
+        u & u + c & u - c
+    \end{bmatrix}
+    \label{eq:matrix_Lambda}
+\end{equation}
+
+where $c = \sqrt{\gamma p / \rho}$ is the speed of sound.
+
+The right eigenvectors $r_1$, $r_2$, and $r_3$ of the matrix $A$ are:
+
+\begin{equation}
+    r_1 = \begin{bmatrix}
+        1 \\
+        u \\
+        \frac{u^2}{2}
+    \end{bmatrix}, \quad
+    r_2 = \begin{bmatrix}
+        1     \\
+        u + c \\
+        H + u c
+    \end{bmatrix}, \quad
+    r_3 = \begin{bmatrix}
+        1     \\
+        u - c \\
+        H - u c
+    \end{bmatrix}
+    \label{eq:right_eigenvectors}
+\end{equation}
+
+where $H = E + p / \rho$ is the enthalpy.
+
+If we rewrite the right eigenvectors in terms of the primitive variables contained in the vector $U$, and adjust the modulus of each eigenvector to match the one of the $Q_A$ reported in \cite{Ghia1982HighReSF}, we get:
+
+\begin{equation}
+    Q_A = \begin{bmatrix}
+        r_1 & r_2 & r_3
+    \end{bmatrix} = \begin{bmatrix}
+        1             & \frac{\rho}{2c}                                                & - \frac{\rho}{2c}                                                \\
+        u             & \frac{\rho}{2c} (u + c)                                        & - \frac{\rho}{2c} (u - c)                                        \\
+        \frac{u^2}{2} & \frac{\rho}{2c} (\frac{u^2}{2} + \frac{c^2}{\gamma - 1} + u c) & - \frac{\rho}{2c} (\frac{u^2}{2} + \frac{c^2}{\gamma - 1} - u c)
+    \end{bmatrix}
+    \label{eq:matrix_Q_A}
+\end{equation}
+
+The code of Mathematica used to derive the right eigenvectors $r_1$, $r_2$, and $r_3$ is reported below:
+
+\lstinputlisting[
+    style=mathematica,
+    language=Mathematica,
+    caption=Mathematica notebook for Q2.,
+]{files/Q2.txt}
+
+

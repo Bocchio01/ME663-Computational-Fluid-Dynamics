@@ -16,7 +16,7 @@ Derive the Jacobian matrix $A = \frac{\partial F}{\partial U}$ given:
     \end{bmatrix}
 \end{equation}
 
-where $\rho$ is the density, $u$ is the velocity, $E$ is the total energy, and $p$ is the pressure.
+where $\rho$ is the density, $u$ is the velocity, $E = \frac{p}{(\gamma - 1) \rho} + \frac{1}{2} u^2$ is the total energy, and $p$ is the pressure.
 
 \subsection{Solution}
 
@@ -55,5 +55,14 @@ Now, we can proceed with the derivation of the Jacobian matrix $A$ based on its 
         \frac{\gamma - 3}{2} u^2      & (3 - \gamma) u                           & \gamma - 1 \\
         (\gamma - 1) u^3 - \gamma u E & -\frac{3}{2} (\gamma - 1) u^2 + \gamma E & \gamma u   \\
     \end{bmatrix}
+    \label{eq:matrix_A}
 \end{equation}
+
+The code of Mathematica used to derive the Jacobian matrix $A$ is reported below:
+
+\lstinputlisting[
+    style=mathematica,
+    language=Mathematica,
+    caption=Mathematica notebook for Q1.,
+]{files/Q1.txt}
 

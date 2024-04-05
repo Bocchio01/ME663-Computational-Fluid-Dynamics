@@ -1,8 +1,26 @@
 \section{Methods}
 \label{sec:methods}
 
+\subsection{Symbolic Analysis}
+
+Most of the request for this assignment has been solved using symbolic analysis in \texttt{Mathematica}.
+
+For each Q\#, the chunk of code used to solve that particular question is reported at the end of the section.
+
+Here, we report the head of the \texttt{Mathematica} notebook where both $U$ and $F$ are initialized as symbolic variables.
+
 \lstinputlisting[
     style=mathematica,
     language=Mathematica,
-    caption=Mathematica notebook used for symbolic analysis of the discretized schemes.,
+    caption=Initialization of symbolic variables in Mathematica.,
 ]{files/Initial.txt}
+
+A full notebook can be found in the appendix section of this document (Section \ref{sec:appendix}).
+
+\subsection{Code implementation}
+
+The code implementation has been done in \texttt{MATLAB} for the sake of simplicity and coding speed with respect to the previous assignment where the code was implemented in \texttt{C11}.
+
+However, we would like in the future to integrate the code in the codebase of the previous assignment, where both the SCGS and SIMPLE algorithms are currently implemented.
+
+The most important part of the \texttt{MATLAB} code can be found in the appendix section (Section \ref{sec:appendix}), while the complete code can be found on GitHub at the following link: \url{https://github.com/Bocchio01/University_Programming_Classes/tree/master/07%20-%20ME663%20Computational%20Fluid%20Dynamics/Assignment%202}.

@@ -1,0 +1,17 @@
+(*Q2: Right eigenvectors for A*)
+
+U = U /. {Subscript[e, T] -> a^2/(\[Gamma]*(\[Gamma] - 1)) + u^2/2 };
+A = A /. {Subscript[e, T] -> a^2/(\[Gamma]*(\[Gamma] - 1)) + u^2/2 };
+
+{\[Lambda], Q} = Eigensystem[A];
+
+\[Lambda][[{1, 2, 3}]] = \[Lambda][[{3, 1, 2}]];
+Q[[{1, 2, 3}]] = Q[[{3, 1, 2}]];
+
+factors = {
+   u*u/2,
+   \[Rho]/(2*a)*(u*u/2 + a*a/(\[Gamma] - 1) + a*u),
+   -\[Rho]/(2*a)*(u*u/2 + a*a/(\[Gamma] - 1) - a*u)
+   };
+
+Q = Transpose[factors Q];

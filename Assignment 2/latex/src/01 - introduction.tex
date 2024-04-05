@@ -1,0 +1,52 @@
+\section{Introduction}
+\label{sec:introduction}
+
+After having deal with incompressible fluid in the previous assignment, we are now going to study the compressible fluid.
+
+The compressible fluid is a fluid in which the density changes significantly with the pressure.
+This is typically the case for gases, which can be compressed or expanded, or for liquids at high speed or high pressure.
+
+The metrics used to describe the compressibility of a fluid are the speed of sound $c$ and the Mach number $M$.
+The speed of sound is the speed at which small disturbances propagate through the fluid, and it is given by the equation:
+
+\begin{equation}
+    c = \sqrt{\frac{\gamma p}{\rho}}
+\end{equation}
+
+where $\gamma$ is the adiabatic index, $p$ is the pressure, and $\rho$ is the density.
+
+The Mach number is the ratio of the speed of an object to the speed of sound in the fluid, and it is given by the equation:
+
+\begin{equation}
+    M = \frac{u}{c}
+\end{equation}
+
+where $u$ is the velocity of the object.
+
+In this assignment, we are going to study the compressible fluid using the Euler equations, which are a set of equations that describe the conservation of mass, momentum, and energy in a fluid.
+The Euler equations are given by the following system of partial differential equations:
+
+\begin{equation}
+    \frac{\partial U}{\partial t} + \nabla \cdot F = 0
+\end{equation}
+
+where $U$ is the vector of conserved variables, and $F$ is the vector of fluxes.
+
+If we consider a 1D flow, the Euler equations can be written as:
+
+\begin{equation}
+    \frac{\partial U}{\partial t} + \frac{\partial F}{\partial x} = 0
+    \label{eq:euler_equations}
+\end{equation}
+
+As we can see, the Euler equations are a hyperbolic system of partial differential equations, which means that they have a wave-like solution.
+
+In this assignment, we are going to solve numerically Equation \ref{eq:euler_equations}.
+To do so, we will adopt the flux-vector splitting method, which consists of splitting the flux vector based on the eigenvalues of the Jacobian matrix of the flux vector.
+This method allows us to solve the Euler equations in a more stable and accurate way.
+
+In the next sections, we will derive the Jacobian matrix of the flux vector (Section \ref{sec:Q1}), the eigenvalues and eigenvectors of the Jacobian matrix (Section \ref{sec:Q2}), and the splitted flux vectors (Section \ref{sec:Q3}), highlighting its dependence on the eigenvalues of the Jacobian matrix.
+
+In section \ref{sec:Q4}, we will focus on how to compute the eigenvalues of the system, proofing both the Steger \& Warming formulation \cite{Steger-Warming} and the van Leer formulation \cite{van-Leer}.
+
+Finally, we will implement a 1D solver for the Euler equations using the flux-vector splitting method and compare the results with the exact solution (Section \ref{sec:Q5}).

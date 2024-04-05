@@ -1,0 +1,8 @@
+(*Q3: Flux-vector splitting*)
+
+Qinv = Inverse[Q];
+A = Q . DiagonalMatrix[\[Lambda]] . Qinv;
+
+F = A . U /. {\[Lambda][[1]] -> \[Lambda]1, \[Lambda][[2]] -> \[Lambda]2, \[Lambda][[3]] -> \[Lambda]3 };
+
+CoefficientList[F/(\[Rho]/(2*\[Gamma])), {\[Lambda]1, \[Lambda]2, \[Lambda]3}]
