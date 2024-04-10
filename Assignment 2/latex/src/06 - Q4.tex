@@ -8,3 +8,29 @@ Following Q3, show that $\lambda^\pm$ in $F^\pm$ corresponding to van Leer's flu
     \lambda_2^\pm & = \frac{a}{4} (M + 1)^2 \left[3 - M + \frac{\gamma - 1}{\gamma + 1} (M - 1)^2\right]                    \\
     \lambda_3^\pm & = \frac{a}{4} (M + 1)^2 \left(2 \frac{M - 1}{\gamma + 1}\right) \left[1 + \frac{\gamma - 1}{2} M\right]
 \end{align}
+
+
+\subsection{Tentative solution}
+
+We have tried to prove this by taking the expected flux vector in terms of $M$ splitting and proving the identity against Equation \ref{eq:Q3_result} with the given values of $\lambda_1^\pm$, $\lambda_2^\pm$, and $\lambda_3^\pm$ for van Leer's formulation.
+
+However, we have not been able to prove the identity, neither by hand nor by using Mathematica.
+
+\begin{equation}
+    F = \begin{bmatrix}
+        \rho a M                                 \\
+        \frac{\rho a^2}{\gamma} (\gamma M^2 + 1) \\
+        \rho a^3 M (\frac{1}{2} M^2 + \frac{1}{\gamma-1})
+    \end{bmatrix}
+    \label{eq:flux_vector_VL}
+\end{equation}
+
+Theoretically, by imposing Equation \ref{eq:flux_vector_VL} equal to Equation \ref{eq:Q3_result} with the given values of $\lambda_1^\pm$, $\lambda_2^\pm$, and $\lambda_3^\pm$ relative to van Leer's formulation, we should have been able to prove the identity.
+
+Here follows the Mathematica code used to try to prove the identity:
+
+\lstinputlisting[
+    style=mathematica,
+    language=Mathematica,
+    caption=Mathematica code used to prove the identity for van Leer's flux-vector splitting method,
+]{files/Q4.txt}

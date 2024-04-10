@@ -1,0 +1,66 @@
+(*Tommaso Bocchietti*)
+(*ME663-Computational Fluid Dynamics*)
+(*Compressible flow matrices calculations*)
+Clear["Global`*"]
+
+
+(*Initial setup*)
+U = {
+{U1},
+{U2},
+{U3}
+ };
+
+F = {
+U[[2]],
+U[[2]]^2/U[[1]] +(\[Gamma]-1)*(U[[3]]-U[[2]]^2/(2*U[[1]])),
+U[[2]]/U[[1]] * (U[[3]]+(\[Gamma]-1)*(U[[3]]-U[[2]]^2/(2*U[[1]])))
+};
+
+
+(*Q1: Jacobian Matrix A*)
+A = D[F[[All,1]], {U[[All,1]], 1}];
+U = U/.{U1->\[Rho],U2->\[Rho]*u,U3->\[Rho]*Subscript[e, T]};
+A = A/.{U1->\[Rho],U2->\[Rho]*u,U3->\[Rho]*Subscript[e, T]};
+
+MatrixForm[A] //FullSimplify
+(*Q2: Right eigenvectors for A*)
+U = U/.{Subscript[e, T]->a^2/(\[Gamma]*(\[Gamma]-1))+u^2/2 };
+A=A/.{Subscript[e, T]->a^2/(\[Gamma]*(\[Gamma]-1))+u^2/2 };
+
+{\[Lambda], Q}=Eigensystem[A];
+
+\[Lambda][[{1,2,3}]]=\[Lambda][[{3,1,2}]];
+Q[[{1,2,3}]]=Q[[{3,1,2}]];
+
+factors = {
+u*u/2,
+\[Rho]/(2*a)*(u*u/2+a*a/(\[Gamma]-1)+a*u),
+-\[Rho]/(2*a)*(u*u/2+a*a/(\[Gamma]-1)-a*u)
+};
+
+Q=Transpose[factors Q];
+
+MatrixForm[\[Lambda]]//FullSimplify
+MatrixForm[Q]//FullSimplify
+
+
+(*Q3: Flux-vector splitting*)
+Qinv = Inverse[Q];
+A = Q.DiagonalMatrix[\[Lambda]].Qinv;
+F = A.U/. {\[Lambda][[1]]->\[Lambda]1, \[Lambda][[2]]->\[Lambda]2, \[Lambda][[3]]->\[Lambda]3 };
+MatrixForm[F]//FullSimplify
+MatrixForm[CoefficientList[F/(\[Rho]/(2*\[Gamma])), {\[Lambda]1, \[Lambda]2, \[Lambda]3}]]//FullSimplify
+
+
+(*Q4: van Leer's lambdas*)
+\[Lambda]1 = 1/4*a*(M+1)^2*(1-(M-1)^2/(\[Gamma]+1));
+\[Lambda]2 = 1/4*a*(M+1)^2*(3-M+(\[Gamma]-1)/(\[Gamma]+1)*(M-1)^2);
+\[Lambda]3 = 1/2*a*(M+1)^2*(M-1)/(\[Gamma]+1)*(1+(\[Gamma]-1)/2*M);
+
+FVL = {
+{\[Rho]* a* M},
+{(\[Rho]* a^2)/(\[Gamma]) (\[Gamma]* M^2+1)},
+{\[Rho]* a^3 *M (1/2* M^2+ 1/(\[Gamma]-1))}
+ };
+MatrixForm[F==FVL] //FullSimplify

@@ -1,0 +1,13 @@
+(*Q4: van Leer's lambdas*)
+
+\[Lambda]1 = 1/4*a*(M + 1)^2*(1 - (M - 1)^2/(\[Gamma] + 1));
+\[Lambda]2 = 1/4*a*(M + 1)^2*(3 - M + (\[Gamma] - 1)/(\[Gamma] + 1)*(M - 1)^2);
+\[Lambda]3 = 1/2*a*(M + 1)^2*(M - 1)/(\[Gamma] + 1)*(1 + (\[Gamma] - 1)/2*M);
+
+FVL = {
+   {\[Rho]* a* M},
+   {(\[Rho]* a^2)/(\[Gamma])  (\[Gamma]* M^2 + 1)},
+   {\[Rho]* a^3 *M  (1/2* M^2 + 1/(\[Gamma] - 1))}
+    };
+
+MatrixForm[F == FVL] // FullSimplify

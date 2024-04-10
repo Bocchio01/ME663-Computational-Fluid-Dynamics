@@ -6,8 +6,8 @@ Derive the following flux-vector splitting:
 \begin{equation}
     F^\pm = \left( \frac{\rho}{2\gamma} \right) \begin{bmatrix}
         2(\gamma - 1) \lambda_1^\pm + \lambda_2^\pm + \lambda_3^\pm                  \\
-        (2 - \gamma) \lambda_1^\pm u + \lambda_2^\pm (u + c) + \lambda_3^\pm (u - c) \\
-        (\gamma - 1) \lambda_1^\pm u^2 + \frac{\lambda_2^\pm}{2} (u + c)^2 + \frac{\lambda_3^\pm}{2} (u - c)^2 + \frac{3-\gamma}{2(\gamma - 1)} (\lambda_2^\pm + \lambda_3^\pm) c^2
+        (2 - \gamma) \lambda_1^\pm u + \lambda_2^\pm (u + a) + \lambda_3^\pm (u - a) \\
+        (\gamma - 1) \lambda_1^\pm u^2 + \frac{\lambda_2^\pm}{2} (u + a)^2 + \frac{\lambda_3^\pm}{2} (u - a)^2 + \frac{3-\gamma}{2(\gamma - 1)} (\lambda_2^\pm + \lambda_3^\pm) a^2
     \end{bmatrix}
     \label{eq:flux_vector_splitting}
 \end{equation}
@@ -17,43 +17,43 @@ Which is equivalent to the following:
 \begin{equation}
     F^\pm = \frac{1}{\gamma} Q_A \begin{bmatrix}
         (\gamma - 1) \rho \lambda_1^\pm \\
-        c \lambda_2^\pm                 \\
-        -c \lambda_3^\pm
+        a \lambda_2^\pm                 \\
+        -a \lambda_3^\pm
     \end{bmatrix}
 \end{equation}
 
-Where $Q_A$ is the eigenvector matrix (Equations \ref{eq:Q_A}).
+Where $Q_A$ is the eigenvector matrix (Equations \ref{eq:matrix_Q_A}).
 
 \subsection{Solution}
 
-So far, we know that the flux-vector $F$ can be expressed as:
+We know that the flux-vector $F$ can be expressed as:
 
 \begin{equation}
-    F = c U = Q_A \Lambda Q_A^{-1} U
+    F = A U = Q_A \Lambda Q_A^{-1} U
 \end{equation}
 
-In order to proof the given flux-vector splitting, we will perform the matrix multiplication given the definition of the eigenvector matrix $Q_A$ (Equation \ref{eq:Q_A}) and the diagonal matrix of the eigenvalues $\Lambda$ (Equation \ref{eq:matrix_Lambda}).
+In order to proof the given flux-vector splitting, we will perform the matrix multiplication given the definitions of the eigenvector matrix $Q_A$ (Equation \ref{eq:matrix_Q_A}) and the diagonal matrix of the eigenvalues $\Lambda$ (Equation \ref{eq:matrix_Lambda}).
 
 The flux-vector splitting can be expressed as follows:
 
 \begin{equation}
     F^\pm = \begin{bmatrix}
-        \frac{\rho  (-c+2 \gamma  \lambda_1^\pm-2 \lambda_1^\pm+\lambda_2^\pm+u)}{2 \gamma }                                                                                                        \\
-        \frac{\rho  \left(c^2+c (\lambda_2^\pm-2 u)+u (2 (\gamma -1) \lambda_1^\pm+\lambda_2^\pm+u)\right)}{2 \gamma }                                                                              \\
-        \frac{\rho  \left(-2 c^3+2 c^2 (\lambda_2^\pm+\gamma  u)-c (\gamma -1) u (3 u-2 \lambda_2^\pm)+(\gamma -1) u^2 (2 (\gamma -1) \lambda_1^\pm+\lambda_2^\pm+u)\right)}{4 (\gamma -1) \gamma } \\
+        \frac{\rho  (-a+2 \gamma  \lambda_1^\pm-2 \lambda_1^\pm+\lambda_2^\pm+u)}{2 \gamma }                                                                                                        \\
+        \frac{\rho  \left(a^2+a (\lambda_2^\pm-2 u)+u (2 (\gamma -1) \lambda_1^\pm+\lambda_2^\pm+u)\right)}{2 \gamma }                                                                              \\
+        \frac{\rho  \left(-2 a^3+2 a^2 (\lambda_2^\pm+\gamma  u)-a (\gamma -1) u (3 u-2 \lambda_2^\pm)+(\gamma -1) u^2 (2 (\gamma -1) \lambda_1^\pm+\lambda_2^\pm+u)\right)}{4 (\gamma -1) \gamma } \\
     \end{bmatrix}
 \end{equation}
 
 From here, we still can't see the equivalence with the given expression.
 
 We can now compute the coefficients that multiply each $\lambda_i^\pm$.
-For simplicity, we will consider the expression $\frac{F^\pm}{\frac{\rho}{2*\gamma}}$, obtaining the following coefficient matrix ($[\text{Null}, \text{Coef}_{\lambda_1}, \text{Coef}_{\lambda_2}, \text{Coef}_{\lambda_3}]$)
+For simplicity, we will consider the expression $\frac{F^\pm}{\frac{\rho}{2*\gamma}}$, obtaining the following coefficient matrix ($[\text{Known term}, \text{Coef}_{\lambda_1}, \text{Coef}_{\lambda_2}, \text{Coef}_{\lambda_3}]$)
 
 \begin{equation}
     \text{CoefficientList} = \begin{bmatrix}
-        u-c                                                   & 2 (\gamma -1)    & 1                                           & 0 \\
-        (c-u)^2                                               & 2 (\gamma - 1) u & c+u                                         & 0 \\
-        \frac{1}{2} (u-c) (\frac{2 c^2}{\gamma -1}-2 c u+u^2) & (\gamma -1) u^2  & \frac{c^2}{\gamma -1} + c u + \frac{u^2}{2} & 0 \\
+        u-a                                                   & 2 (\gamma -1)    & 1                                           & 0 \\
+        (a-u)^2                                               & 2 (\gamma - 1) u & a+u                                         & 0 \\
+        \frac{1}{2} (u-a) (\frac{2 a^2}{\gamma -1}-2 a u+u^2) & (\gamma -1) u^2  & \frac{a^2}{\gamma -1} + a u + \frac{u^2}{2} & 0 \\
     \end{bmatrix}
 \end{equation}
 
@@ -61,19 +61,19 @@ From now on, we can carry on the computation of the coefficients by hand, simpli
 
 \begin{align}
     F^\pm & = \frac{\rho}{2\gamma} \begin{bmatrix}
-                                       u-c                                                   & + & 2 (\gamma -1) \lambda_1^\pm    & + & 1    \lambda_2^\pm                                          & + & 0 \lambda_3^\pm \\
-                                       (c-u)^2                                               & + & 2 (\gamma - 1) u \lambda_1^\pm & + & c+u  \lambda_2^\pm                                          & + & 0 \lambda_3^\pm \\
-                                       \frac{1}{2} (u-c) (\frac{2 c^2}{\gamma -1}-2 c u+u^2) & + & (\gamma -1) u^2 \lambda_1^\pm  & + & (\frac{c^2}{\gamma -1} + c u + \frac{u^2}{2}) \lambda_2^\pm & + & 0 \lambda_3^\pm
+                                       u-a                                                   & + & 2 (\gamma -1) \lambda_1^\pm    & + & 1    \lambda_2^\pm                                          & + & 0 \lambda_3^\pm \\
+                                       (a-u)^2                                               & + & 2 (\gamma - 1) u \lambda_1^\pm & + & a+u  \lambda_2^\pm                                          & + & 0 \lambda_3^\pm \\
+                                       \frac{1}{2} (u-a) (\frac{2 a^2}{\gamma -1}-2 a u+u^2) & + & (\gamma -1) u^2 \lambda_1^\pm  & + & (\frac{a^2}{\gamma -1} + a u + \frac{u^2}{2}) \lambda_2^\pm & + & 0 \lambda_3^\pm
                                    \end{bmatrix} =         \\
           & =   \frac{\rho}{2\gamma} \begin{bmatrix}
                                          \lambda_3^\pm + 2 (\gamma -1) \lambda_1^\pm                                                                 + \lambda_2^\pm       \\
-                                         \lambda_3^\pm (c+u) + 2 (\gamma - 1) u \lambda_1^\pm                                                        + \lambda_2^\pm (c+u) \\
-                                         \frac{\lambda_3^\pm}{2} (u^2 - 2 c u + c^2 + \frac{2 c^2}{\gamma -1} - c^2) + (\gamma -1) u^2 \lambda_1^\pm + \frac{\lambda_2^\pm}{2} (u^2 - 2 c u + c^2 + \frac{2 c^2}{\gamma -1} - c^2)
+                                         \lambda_3^\pm (a+u) + 2 (\gamma - 1) u \lambda_1^\pm                                                        + \lambda_2^\pm (a+u) \\
+                                         \frac{\lambda_3^\pm}{2} (u^2 - 2 a u + a^2 + \frac{2 a^2}{\gamma -1} - a^2) + (\gamma -1) u^2 \lambda_1^\pm + \frac{\lambda_2^\pm}{2} (u^2 - 2 a u + a^2 + \frac{2 a^2}{\gamma -1} - a^2)
                                      \end{bmatrix} = \\
           & = \frac{\rho}{2\gamma} \begin{bmatrix}
                                        2 (\gamma -1) \lambda_1^\pm + \lambda_2^\pm + \lambda_3^\pm                   \\
-                                       2 (\gamma -1) \lambda_1^\pm u + \lambda_2^\pm (u + c) + \lambda_3^\pm (u - c) \\
-                                       (\gamma - 1) \lambda_1^\pm u^2 + \frac{\lambda_2^\pm}{2} (u + c)^2 + \frac{\lambda_3^\pm}{2} (u - c)^2 + \frac{3-\gamma}{2(\gamma - 1)} (\lambda_2^\pm + \lambda_3^\pm) c^2
+                                       2 (\gamma -1) \lambda_1^\pm u + \lambda_2^\pm (u + a) + \lambda_3^\pm (u - a) \\
+                                       (\gamma - 1) \lambda_1^\pm u^2 + \frac{\lambda_2^\pm}{2} (u + a)^2 + \frac{\lambda_3^\pm}{2} (u - a)^2 + \frac{3-\gamma}{2(\gamma - 1)} (\lambda_2^\pm + \lambda_3^\pm) a^2
                                    \end{bmatrix}
     \label{eq:Q3_result}
 \end{align}

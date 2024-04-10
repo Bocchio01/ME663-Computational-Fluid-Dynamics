@@ -40,20 +40,21 @@ The characteristic equation for the matrix $A$ is:
 
 Expanding the determinant, we get:
 
-\begin{equation}
-    -\lambda \left[ (3 - \gamma) u - \lambda \right] \left[ \gamma u - \lambda \right] - \frac{\gamma - 3}{2} u^2 \left[ \gamma u - \lambda \right] - (\gamma - 1) \left[ (\gamma - 1) u^3 - \gamma u E \right] = 0
-\end{equation}
+\begin{align}
+     & -\lambda \left[ \left( (3 - \gamma) u - \lambda \right) \left(\gamma u - \lambda\right) - \left(-\frac{3}{2} (\gamma - 1) u^2 \right) \left( \gamma - 1\right) \right] + \dots \\
+     & - 1 \left[ \left( \frac{\gamma - 3}{2} u^2 \right) \left( \gamma u - \lambda \right) - \left( (\gamma - 1) u^3 - \gamma u E \right) \left( \gamma - 1 \right) \right] = 0
+\end{align}
 
 Solving the characteristic equation, we find the eigenvalues of the matrix $A$:
 
 \begin{equation}
-    \Lambda = \begin{bmatrix}
-        u & u + c & u - c
-    \end{bmatrix}
+    \Lambda = diag(\begin{bmatrix}
+        u & u + a & u - a
+    \end{bmatrix})
     \label{eq:matrix_Lambda}
 \end{equation}
 
-where $c = \sqrt{\gamma p / \rho}$ is the speed of sound.
+where $a = \sqrt{\gamma p / \rho}$ is the speed of sound.
 
 The right eigenvectors $r_1$, $r_2$, and $r_3$ of the matrix $A$ are:
 
@@ -65,28 +66,28 @@ The right eigenvectors $r_1$, $r_2$, and $r_3$ of the matrix $A$ are:
     \end{bmatrix}, \quad
     r_2 = \begin{bmatrix}
         1     \\
-        u + c \\
-        H + u c
+        u + a \\
+        H + u a
     \end{bmatrix}, \quad
     r_3 = \begin{bmatrix}
         1     \\
-        u - c \\
-        H - u c
+        u - a \\
+        H - u a
     \end{bmatrix}
     \label{eq:right_eigenvectors}
 \end{equation}
 
 where $H = E + p / \rho$ is the enthalpy.
 
-If we rewrite the right eigenvectors in terms of the primitive variables contained in the vector $U$, and adjust the modulus of each eigenvector to match the one of the $Q_A$ reported in \cite{Ghia1982HighReSF}, we get:
+If we rewrite the right eigenvectors in terms of the primitive variables contained in the vector $U$, and adjust the modulus of each eigenvector to match the one of the $Q_A$ reported in \cite{Steger-Warming}, we get:
 
 \begin{equation}
     Q_A = \begin{bmatrix}
         r_1 & r_2 & r_3
     \end{bmatrix} = \begin{bmatrix}
         1             & \frac{\rho}{2c}                                                & - \frac{\rho}{2c}                                                \\
-        u             & \frac{\rho}{2c} (u + c)                                        & - \frac{\rho}{2c} (u - c)                                        \\
-        \frac{u^2}{2} & \frac{\rho}{2c} (\frac{u^2}{2} + \frac{c^2}{\gamma - 1} + u c) & - \frac{\rho}{2c} (\frac{u^2}{2} + \frac{c^2}{\gamma - 1} - u c)
+        u             & \frac{\rho}{2c} (u + a)                                        & - \frac{\rho}{2c} (u - a)                                        \\
+        \frac{u^2}{2} & \frac{\rho}{2c} (\frac{u^2}{2} + \frac{a^2}{\gamma - 1} + u a) & - \frac{\rho}{2c} (\frac{u^2}{2} + \frac{a^2}{\gamma - 1} - u a)
     \end{bmatrix}
     \label{eq:matrix_Q_A}
 \end{equation}

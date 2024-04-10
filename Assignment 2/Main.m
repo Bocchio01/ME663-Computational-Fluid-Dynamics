@@ -21,14 +21,18 @@ sim = struct( ...
     "time_end", 0.01, ...
     "x", struct( ...
     "domain", [-10 10], ...
-    "N_cells", 400), ...
-    "flux_vector_splitting_type", ["VL"], ...
-    "flux_vector_splitting_order", ["UDS"]);
+    "N_cells", 50), ...
+    "flux_vector_splitting_type", "SW", ...
+    "flux_vector_splitting_order", "UDS");
 
 sim.dx = (sim.x.domain(2) - sim.x.domain(1)) / sim.x.N_cells;
 sim.x_vec = linspace(sim.x.domain(1), sim.x.domain(2), sim.x.N_cells);
 
-output = struct('plots', true);
+output = struct( ...
+    'plots', true, ...
+    'movie', false);
+
+% latex_img_path = 'latex/img';
 
 
 %% Solver initialization
@@ -44,19 +48,18 @@ solver = struct( ...
 
 %% Anonymous functions
 
-fun = struct();
+funcs = struct();
 
-fun.dt = @(dx, u, a, CFL) CFL * dx / max(abs(u) + a);
+funcs.dt = @(dx, u, a, CFL) CFL * dx / max(abs(u) + a);
 
-fun.p = @(rho, u, E, gamma) (gamma - 1) * rho .* (E - 1/2 * u.^2);
-fun.E = @(rho, p, gamma, u) p ./ ((gamma - 1) * rho) + 1/2 * u.^2;
-fun.a = @(rho, p, gamma)    sqrt(gamma * p ./ rho);
+funcs.p = @(rho, u, E, gamma) (gamma - 1) * rho .* (E - 1/2 * u.^2);
+funcs.E = @(rho, p, gamma, u) p ./ ((gamma - 1) * rho) + 1/2 * u.^2;
+funcs.a = @(rho, p, gamma)    sqrt(gamma * p ./ rho);
 
-fun.U = @(rho, u, E)               [(rho)'; (rho .* u)'; (rho .* E)'];
-fun.F = @(rho, u, a, gamma, lamda) rho / (2 * gamma) * [
-    2 * (gamma - 1) * lamda(1) + lamda(2) + lamda(3);
-    2 * (gamma - 1) * lamda(1) * u + lamda(2) * (u + a) + lamda(3) * (u - a);
-    (gamma - 1) * lamda(1) * u.^2 + 1/2 * lamda(2) * (u + a).^2 + 1/2 * lamda(3) * (u - a).^2 + (3 - gamma) / (2 * (gamma - 1)) * (lamda(2) + lamda(3)) * a.^2
+funcs.U = @(rho, u, E) [
+    rho;
+    rho .* u;
+    rho .* E
     ];
 
 
@@ -64,11 +67,9 @@ fun.F = @(rho, u, a, gamma, lamda) rho / (2 * gamma) * [
 
 half_idx = floor(length(sim.x_vec) / 2);
 
-[U_initial, U_final] = compute_BCs_U(fun, fluid.BCs, fluid.gamma);
+[U_initial, U_final] = compute_BCs_U(funcs, fluid.BCs, fluid.gamma);
 solver.U(:, 1:half_idx) = repmat(U_initial, 1, half_idx);
 solver.U(:, half_idx + 1:end) = repmat(U_final, 1, sim.x.N_cells - half_idx);
-
-[solver.rho, solver.u, solver.p, solver.E, solver.a] = compute_solver_vectors(solver.U, fun, fluid.gamma);
 
 clear U_initial U_final half_idx
 
@@ -77,246 +78,173 @@ clear U_initial U_final half_idx
 
 iteration = 0;
 dt = [0];
+t = 0;
 
-while max(cumsum(dt)) < sim.time_end
+N = sim.x.N_cells;
+Fe = zeros(3, N);
+Fw = zeros(3, N);
+
+[solver.rho, solver.u, solver.p, solver.E, solver.a] = compute_solver_vectors(solver.U, funcs, fluid.gamma);
+
+while t < sim.time_end
     
     iteration = iteration + 1;
-    dt(iteration) = [fun.dt(sim.dx, solver.u, solver.a, sim.CFL)];
+    dt(iteration) = [funcs.dt(sim.dx, solver.u, solver.a, sim.CFL)];
+    t = t + dt(iteration);
     
-    [rho, u, ~, ~, a] = compute_solver_vectors(solver.U, fun, fluid.gamma);
-    lambdas = compute_lambda(fluid, solver.U, fun, sim.flux_vector_splitting_type);
+    % Compute fluxes at the center of each cell
+    switch sim.flux_vector_splitting_type
+        
+        case "SW"
+            [F_plus, F_minus] = compute_flux_SW(solver.rho, solver.u, solver.p, solver.E, solver.a, fluid.gamma);
+            
+        case "VL"
+            [F_plus, F_minus] = compute_flux_VL(solver.rho, solver.u, solver.p, solver.E, solver.a, fluid.gamma);
+            
+        otherwise
+            error('Unknown flux vector splitting type');
+            
+    end
     
-    for cell_idx = 1:sim.x.N_cells
-        
-        idx_WW = max(cell_idx - 2, 1);
-        idx_W = max(cell_idx - 1, 1);
-        idx_P = cell_idx;
-        idx_E = min(cell_idx + 1, sim.x.N_cells);
-        idx_EE = min(cell_idx + 2, sim.x.N_cells);
-        
+    % Compute fluxes at the cell interfaces using an interpolation of the fluxes at the cell centers
+    for i = 1:N
         
         switch sim.flux_vector_splitting_order
+            
             case "UDS"
-                
                 weight = 0;
                 
             case "LUDS"
-                
                 weight = 1/2;
                 
-            otherwise
+                if(iteration == 1 && i == 1)
+                    disp('LUDS splitting order may not be stable');
+                end
                 
+            otherwise
                 error('Unknown flux vector splitting order');
                 
         end
         
-        Fe = fun.F(...
-            rho(idx_P) + weight * (rho(idx_P) - rho(idx_W)), ...
-            u(idx_P) + weight * (u(idx_P) - u(idx_W)), ...
-            a(idx_P) + weight * (a(idx_P) - a(idx_W)), ...
-            fluid.gamma, ...
-            lambdas(1, :, idx_P) + weight * (lambdas(1, :, idx_P) - lambdas(1, :, idx_W))) + ...
-            fun.F(...
-            rho(idx_E) + weight * (rho(idx_E) - rho(idx_EE)), ...
-            u(idx_E) + weight * (u(idx_E) - u(idx_EE)), ...
-            a(idx_E) + weight * (a(idx_E) - a(idx_EE)), ...
-            fluid.gamma, ...
-            lambdas(2, :, idx_E) + weight * (lambdas(2, :, idx_E) - lambdas(2, :, idx_EE)));
+        WW = max(i - 2, 1);
+        W = max(i - 1, 1);
+        P = i;
+        E = min(i + 1, N);
+        EE = min(i + 2, N);
         
-        Fw = fun.F(...
-            rho(idx_W) + weight * (rho(idx_W) - rho(idx_WW)), ...
-            u(idx_W) + weight * (u(idx_W) - u(idx_WW)), ...
-            a(idx_W) + weight * (a(idx_W) - a(idx_WW)), ...
-            fluid.gamma, ...
-            lambdas(1, :, idx_W) + weight * (lambdas(1, :, idx_W) - lambdas(1, :, idx_WW))) + ...
-            fun.F(...
-            rho(idx_P) + weight * (rho(idx_P) - rho(idx_E)), ...
-            u(idx_P) + weight * (u(idx_P) - u(idx_E)), ...
-            a(idx_P) + weight * (a(idx_P) - a(idx_E)), ...
-            fluid.gamma, ...
-            lambdas(2, :, idx_P) + weight * (lambdas(2, :, idx_E) - lambdas(2, :, idx_E)));
+        Fe(:, i) = ...
+            (F_plus(:, P) + weight * (F_plus(:, P) - F_plus(:, W))) + ...
+            (F_minus(:, E) + weight * (F_minus(:, E) - F_minus(:, EE)));
         
-        % Fe = fun.F(rho(idx_P), u(idx_P), a(idx_P), fluid.gamma, lambdas(1, :, idx_P)) + ...
-        %     fun.F(rho(idx_E), u(idx_E), a(idx_E), fluid.gamma, lambdas(2, :, idx_E));
-        
-        % Fw = fun.F(rho(idx_W), u(idx_W), a(idx_W), fluid.gamma, lambdas(1, :, idx_W)) + ...
-        %     fun.F(rho(idx_P), u(idx_P), a(idx_P), fluid.gamma, lambdas(2, :, idx_P));
-        
-        solver.U(:, idx_P) = solver.U(:, idx_P) - dt(end) / sim.dx * (Fe - Fw);
+        Fw(:, i) = ...
+            (F_plus(:, W) + weight * (F_plus(:, W) - F_plus(:, WW))) + ...
+            (F_minus(:, P) + weight * (F_minus(:, P) - F_minus(:, E)));
         
     end
     
-    [solver.U(:, 1), solver.U(:, end)] = compute_BCs_U(fun, fluid.BCs, fluid.gamma);
-    [solver.rho, solver.u, solver.p, solver.E, solver.a] = compute_solver_vectors(solver.U, fun, fluid.gamma);
+    % Update the solution and apply boundary conditions
+    solver.U(:, :) = solver.U(:, :) - dt(end) / sim.dx * (Fe - Fw);
+    [solver.U(:, 1), solver.U(:, end)] = compute_BCs_U(funcs, fluid.BCs, fluid.gamma);
     
-    if min(solver.p) < 0
-        disp(iteration)
-        disp('negative pressure found!');
+    % Compute the new state vectors
+    [solver.rho, solver.u, solver.p, solver.E, solver.a] = compute_solver_vectors(solver.U, funcs, fluid.gamma);
+    
+    if any(solver.p < 0)
+        error(['Negative pressure found @iteration=' num2str(iteration-1)]);
     end
+    
+    if (output.movie)
+        set(0,'DefaultFigureVisible','off');
+        plot_figures(iteration) = getframe(plot_states(solver.rho, solver.u, solver.p, solver.E, solver.a, t, sim.x_vec));
+    end
+    
+end
+
+
+%% Load solutions
+
+solution = struct( ...
+    x_vec = [], ...
+    data = struct());
+
+[solution.x_vec, solution.data.rho] = read_file_solution('solutions/density.exa');
+[~, solution.data.S] = read_file_solution('solutions/entropy.exa');
+[~, solution.data.M] = read_file_solution('solutions/mach.exa');
+[~, solution.data.rho_u] = read_file_solution('solutions/massflux.exa');
+[~, solution.data.p] = read_file_solution('solutions/pressure.exa');
+[~, solution.data.u] = read_file_solution('solutions/velocity.exa');
+
+
+%% Movie
+
+if (output.movie)
+    
+    video_object = VideoWriter([char(sim.flux_vector_splitting_type) '_' char(sim.flux_vector_splitting_order) '_' num2str(sim.x.N_cells) '.avi'], 'Motion JPEG AVI');
+    video_object.Quality = 95;
+    video_object.FrameRate = 10;
+    
+    open(video_object);
+    writeVideo(video_object, plot_figures);
+    close(video_object);
     
 end
 
 
 %% Plots
 
+set(0,'DefaultFigureVisible','on');
 if output.plots
     
-    figure_results_analysis = figure('Name', 'Results analysis', 'NumberTitle', 'off');
-    tiledlayout(4, 1);
+    % State vectors (computed vs. exact)
+    figure_results_analysis = plot_states(solver.rho, solver.u, solver.p, solver.E, solver.a, t, sim.x_vec);
     
     % rho
-    nexttile;
-    hold on
-    grid on
-    
-    plot(sim.x_vec, solver.rho, 'k-');
-    
-    ylabel('x [m]');
-    ylabel('rho');
+    nexttile(1);
+    plot(solution.x_vec, solution.data.rho, 'r-');
     
     % u
-    nexttile;
-    hold on
-    grid on
-    
-    plot(sim.x_vec, solver.u, 'r-');
-    
-    ylabel('x [m]');
-    ylabel('u');
+    nexttile(2);
+    plot(solution.x_vec, solution.data.u, 'r-');
     
     % p
-    nexttile;
-    hold on
-    grid on
-    
-    plot(sim.x_vec, solver.p, 'b-');
-    
-    ylabel('x [m]');
-    ylabel('p');
+    nexttile(3);
+    plot(solution.x_vec, solution.data.p, 'r-');
     
     % E
-    nexttile;
+    nexttile(4);
+    plot(solution.x_vec, funcs.E(solution.data.rho, solution.data.p, fluid.gamma, solution.data.u), 'r-');
+    
+    
+    % Colormap with the u velocity (computed vs. exact)
+    figure_velocity_gradient = figure('Name', 'Velocity analysis', 'NumberTitle', 'off');
+    tiledlayout(2, 1);
+    
+    nexttile(1);
     hold on
     grid on
     
-    plot(sim.x_vec, solver.E, 'g-');
+    colormap('parula');
+    imagesc(sim.x_vec, 0, solver.u);
+    colorbar;
     
-    ylabel('x [m]');
-    ylabel('E');
+    axis tight;
+    xlabel('x [m]');
+    
+    nexttile(2);
+    hold on
+    grid on
+    
+    colormap('parula');
+    imagesc(sim.x_vec, 0, solution.data.u');
+    colorbar;
+    
+    axis tight;
+    xlabel('x [m]');
+    
+    if(exist('latex_img_path', 'var') == 1)
+        saveas(figure_results_analysis, [latex_img_path '/states/' char(sim.flux_vector_splitting_type) num2str(sim.x.N_cells) '.png']);
+        saveas(figure_velocity_gradient, [latex_img_path '/velocity/' char(sim.flux_vector_splitting_type) num2str(sim.x.N_cells) '.png']);
+    end
     
 end
 
-
-
-%% Functions
-
-function [rho, u, a, lambdas] = interpolate_flux_splitting(flux_vector_splitting_order, fluid, solver, cell_idx)
-
-decide = @(east, west, lambdas) east * (lambdas(1) > 0) + west * (lambdas(2) < 0);
-
-idx_WW = max(cell_idx - 2, 1);
-idx_W = max(cell_idx - 1, 1);
-idx_P = cell_idx;
-idx_E = min(cell_idx + 1, sim.x.N_cells);
-idx_EE = min(cell_idx + 2, sim.x.N_cells);
-
-U = solver.U(:, [idx_WW, idx_W, idx_P, idx_E, idx_EE]);
-
-[rho, u, ~, ~, a] = compute_solver_vectors(U, fun, fluid.gamma);
-lambdas = compute_lambda(fluid, U, flux_vector_splitting_type);
-
-switch flux_vector_splitting_order
-    case "UDS"
-        
-        U_interpolated_e.rho = decide(rho(3), rho(4), lambdas(1:2, 3));
-        U_interpolated_e.u = decide(u(3), u(4), lambdas(1:2, 3));
-        U_interpolated_e.a = decide(a(3), a(4), lambdas(1:2, 3));
-        
-        U_interpolated_w.rho = decide(rho(2), rho(3), lambdas(1:2, 2));
-        U_interpolated_w.u = decide(u(2), u(3), lambdas(1:2, 2));
-        U_interpolated_w.a = decide(a(2), a(3), lambdas(1:2, 2));
-        
-    case "LUDS"
-        
-        U_interpolated_e.rho = decide(rho(3) + 1/2 * (rho(3) - rho(2)), rho(4) - 1/2 * (rho(4) - rho(5)), lambdas(1:2, 3));
-        U_interpolated_e.u = decide(u(3) + 1/2 * (u(3) - u(2)), u(4) - 1/2 * (u(4) - u(5)), lambdas(1:2, 3));
-        U_interpolated_e.a = decide(a(3) + 1/2 * (a(3) - a(2)), a(4) - 1/2 * (a(4) - a(5)), lambdas(1:2, 3));
-        
-        U_interpolated_w.rho = decide(rho(2) + 1/2 * (rho(2) - rho(1)), rho(3) - 1/2 * (rho(3) - rho(4)), lambdas(1:2, 2));
-        U_interpolated_w.u = decide(u(2) + 1/2 * (u(2) - u(1)), u(3) - 1/2 * (u(3) - u(4)), lambdas(1:2, 2));
-        U_interpolated_w.a = decide(a(2) + 1/2 * (a(2) - a(1)), a(3) - 1/2 * (a(3) - a(4)), lambdas(1:2, 2));
-        
-    otherwise
-        error('Unknown flux vector splitting order');
-end
-
-rho = [U_interpolated_w.rho, U_interpolated_e.rho];
-u = [U_interpolated_w.u, U_interpolated_e.u];
-a = [U_interpolated_w.a, U_interpolated_e.a];
-lambdas = [lambdas(1, 2), lambdas(2, 3)];
-
-end
-
-
-function lambda_vec = compute_lambda(fluid, U, fun, flux_vector_splitting_type)
-% Compute the eigenvalues of the flux vector splitting
-
-lambda_vec = zeros(2, 3, size(U, 2));
-[~, u, ~, ~, a] = compute_solver_vectors(U, fun, fluid.gamma);
-
-switch flux_vector_splitting_type
-    
-    
-    case "SW"
-        eigenvalues = @(u, a) [
-            u;
-            u + a;
-            u - a
-            ];
-        
-        lambda_vec(1, :, :) = max(eigenvalues(u, a), 0);
-        lambda_vec(2, :, :) = min(eigenvalues(u, a), 0);
-        
-    case "VL"
-        eigenvalues = @(a, M, gamma) [
-            1/4 * a .* (M + 1).^2 .* (1 - (M - 1).^2 / (gamma + 1));
-            1/4 * a .* (M + 1).^2 .* (3 - M + (gamma - 1) / (gamma + 1) * (M - 1).^2);
-            1/2 * a .* (M + 1).^2 .* (M - 1)/(gamma + 1) .* (1 + (gamma - 1)/2 * M)
-            ];
-        
-        M = u ./ a;
-        lambda_vec(1, :, :) = + eigenvalues(a, M, fluid.gamma);
-        lambda_vec(2, :, :) = - eigenvalues(a, - M, fluid.gamma);
-        
-    otherwise
-        error('Unknown flux vector splitting type');
-        
-end
-
-end
-
-
-function [U_initial, U_final] = compute_BCs_U(fun, BCs, gamma)
-
-U_initial = fun.U(...
-    BCs.rho(1), ...
-    BCs.u(1), ...
-    fun.E(BCs.rho(1), BCs.p(1), gamma, BCs.u(1)));
-
-U_final = fun.U(...
-    BCs.rho(2), ...
-    BCs.u(2), ...
-    fun.E(BCs.rho(2), BCs.p(2), gamma, BCs.u(2)));
-
-end
-
-
-function [rho, u, p, E, a] = compute_solver_vectors(U, fun, gamma)
-
-rho = U(1, :);
-u = U(2, :) ./ rho;
-E = U(3, :) ./ rho;
-p = fun.p(rho, u, E, gamma);
-a = fun.a(rho, p, gamma);
-
-end
