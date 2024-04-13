@@ -1,0 +1,59 @@
+\section{Code implementation}
+\label{sec:code_implementation}
+
+When it comes to the implementation of the \acrshort{scgs} and \acrshort{simple} algorithms, lots of details need to be taken into account, such as the data structures, the memory allocation, the data exchange between the different modules of the code, and so on.
+
+% In the following, we report the core of the \acrshort{scgs} algorithm, both in a flowchart and in a \texttt{C} implementation.
+% In the following, we report the core of the \acrshort{scgs} algorithm in a \texttt{C} implementation.
+
+The complete codebase is available on GitHub at \url{https://github.com/Bocchio01/CFD_Simulation_Engine}.
+
+% \begin{figure}[H]
+%     \centering
+
+%     \tikzstyle{decision} = [diamond, draw, fill=red!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+%     \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=4em]
+%     \tikzstyle{line} = [draw, -latex']
+
+%     \begin{tikzpicture}[node distance = 2cm, auto]
+%         % Place nodes
+%         \node [block] (init) {Allocate Memory};
+%         \node [block, below of=init] (reset) {Reset SCGS};
+%         \node [block, below of=reset] (compose) {Compose System Matrix};
+%         \node [block, below of=compose] (noslip) {Apply Normal No-Slip BCs};
+%         \node [block, below of=noslip] (solve) {Solve System Matrix};
+%         \node [block, below of=solve] (correct) {Apply Corrections};
+%         \node [block, below of=correct] (residuals) {Update Residuals};
+%         \node [block, below of=residuals] (noslipt) {Apply Tangential No-Slip BCs};
+%         \node [decision, below of=noslipt] (converged) {Converged?};
+%         \node [block, below of=converged, node distance=3cm] (output) {Output Solution};
+%         \node [block, left of=converged, node distance=4cm] (update) {Update Iteration};
+
+%         % Draw edges
+%         \path [line] (init) -- (reset);
+%         \path [line] (reset) -- (compose);
+%         \path [line] (compose) -- (noslip);
+%         \path [line] (noslip) -- (solve);
+%         \path [line] (solve) -- (correct);
+%         \path [line] (correct) -- (residuals);
+%         \path [line] (residuals) -- (noslipt);
+%         \path [line] (noslipt) -- (converged);
+%         \path [line] (converged) -- node [near start] {no} (update);
+%         \path [line] (update) |- (reset);
+%         \path [line] (converged) -- node {yes}(output);
+
+%         % Draw three diamonds for the first loop
+%         \node [decision, left of=noslip, node distance=6cm] (loop1a) {Loop 1};
+%         \node [decision, below of=loop1a, node distance=3cm] (loop1b) {Loop 2};
+%         \node [decision, below of=loop1b, node distance=3cm] (loop1c) {Loop 3};
+%         \path [line] (noslip) -| node [near start] {} (loop1a);
+%         \path [line] (loop1a) -- node [near start] {} (loop1b);
+%         \path [line] (loop1b) -- node [near start] {} (loop1c);
+%         \path [line] (loop1c) |- node [near start] {} (solve);
+%     \end{tikzpicture}
+
+%     \caption{Flowchart of the \acrshort{scgs} algorithm.}
+%     \label{fig:scgs_algorithm}
+
+% \end{figure}
+

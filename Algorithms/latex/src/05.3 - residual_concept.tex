@@ -1,0 +1,49 @@
+\subsection{Residual Concept}
+\label{subsec:residual_concept}
+
+Being the \acrshort{scgs} an iterative method, it's crucial to introduce the concept of residual, which is the key to understand the convergence of the method.
+
+The residual is the difference between the left-hand side and the right-hand side of the discretized equations, and it's a measure of the error of the current state of the system.
+
+For our system of 5 equations, we can define 5 residuals, one for each equation.
+
+To simplify the set of equations (and have a simpler matrix resolution afterwards), we can choose to apply the correction to only some variables, and not to all of them.
+
+In particular, we can choose to neglect the correction for the velocity and pressure components regarding the neighbor cells, and apply the correction only to the pressure and the velocity components at the current cell.
+
+By doing so, we can rewrite the system of equations as:
+
+\begin{gather}
+    (A_P^u)_{i-1,j} (u_{i-1,j}^*+u_{i-1,j}') = \sum_{nb} (A_{nb}^u)_{i-1,j} (u_{nb}^*)_{i-1,j} + (p_{i-1,j}^* - (p_{i,j}^* + p_{i,j}')) \Delta y \\
+    (A_P^u)_{i,j}   (u_{i,j}  ^*+u_{i,j}')   = \sum_{nb} (A_{nb}^u)_{i,j} (u_{nb}^*)_{i,j}     + ((p_{i,j}^* + p_{i,j}') - p_{i+1,j}^*) \Delta y   \\
+    (A_P^v)_{i,j-1} (v_{i,j-1}^*+v_{i,j-1}') = \sum_{nb} (A_{nb}^v)_{i,j-1} (v_{nb}^*)_{i,j-1} + (p_{i,j-1}^* - (p_{i,j}^* + p_{i,j}')) \Delta x \\
+    (A_P^v)_{i,j}   (v_{i,j}  ^*+v_{i,j}')   = \sum_{nb} (A_{nb}^v)_{i,j} (v_{nb}^*)_{i,j}     + ((p_{i,j}^* + p_{i,j}') - p_{i,j+1}^*) \Delta x   \\
+    ((u_{i,j}  ^*+u_{i,j}') - (u_{i-1,j}^*+u_{i-1,j}')) \Delta y + ((v_{i,j}  ^*+v_{i,j}') - (v_{i,j-1}^*+v_{i,j-1}')) \Delta x = 0
+\end{gather}
+
+As explained in Subsection \ref{subsec:variable_correction_concept}, the $^*$ superscript is used to indicate the value of the variable at the previous iteration, and the $'$ superscript is used to indicate the correction to apply to the variable.
+This means that the $\phi^*$ are known values, and the $\phi'$ are the unknowns to solve for.
+
+We can now rearrange each equation to have the unknowns on the left-hand side and the known on the right-hand side:
+
+\begin{align}
+    (A_P^u)_{i-1,j} u_{i-1,j}' + p_{i,j}' \Delta y                      & = R^u_{i-1,j} \\
+    (A_P^u)_{i,j}   u_{i,j}'   - p_{i,j}'   \Delta y                    & = R^u_{i,j}   \\
+    (A_P^v)_{i,j-1} v_{i,j-1}' + p_{i,j}' \Delta x                      & = R^v_{i,j-1} \\
+    (A_P^v)_{i,j}   v_{i,j}'   - p_{i,j}'   \Delta x                    & = R^v_{i,j}   \\
+    (u_{i,j}' - u_{i-1,j}') \Delta y + (v_{i,j}' - v_{i,j-1}') \Delta x & = R^c_{i,j}
+    \label{eq:residual_system}
+\end{align}
+
+Where $R^\phi_{i,j}$ is the residual of the $\phi$ equation at the $i,j$ cell.
+
+The residuals, computed from the previous system by moving the known terms to the right-hand side, are defined as:
+
+\begin{align}
+    R^u_{i-1,j} & = \sum_{nb} (A_{nb}^u)_{i-1,j} (u_{nb}^*)_{i-1,j} - (A_P^u)_{i-1,j} u_{i-1,j}^*   + (p_{i-1,j}^* - p_{i,j}^*) \Delta y \\
+    R^u_{i,j}   & = \sum_{nb} (A_{nb}^u)_{i,j} (u_{nb}^*)_{i,j} - (A_P^u)_{i,j} u_{i,j}^*           + (p_{i,j}^* - p_{i+1,j}^*) \Delta y \\
+    R^v_{i,j-1} & = \sum_{nb} (A_{nb}^v)_{i,j-1} (v_{nb}^*)_{i,j-1} - (A_P^v)_{i,j-1} v_{i,j-1}^*   + (p_{i,j-1}^* - p_{i,j}^*) \Delta x \\
+    R^v_{i,j}   & = \sum_{nb} (A_{nb}^v)_{i,j} (v_{nb}^*)_{i,j} - (A_P^v)_{i,j} v_{i,j}^*           + (p_{i,j}^* - p_{i,j+1}^*) \Delta x \\
+    R^c_{i,j}   & = -\left[(u_{i,j}^* - u_{i-1,j}^*) \Delta y + (v_{i,j}^* - v_{i,j-1}^*) \Delta x\right]
+\end{align}
+

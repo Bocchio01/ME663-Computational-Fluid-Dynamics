@@ -1,0 +1,33 @@
+\section{Methods}
+\label{sec:methods}
+
+For this assignment, we have chosen to implement the code using C-language, and to implement different schemes and methods to solve the incompressible Navier-Stokes equations.
+In particular, we have implemented the following schemes for the convection term:
+
+\begin{itemize}
+    \item Upwind Differencing Scheme (UDS)
+    \item Central Differencing Scheme (CDS)
+          % \item Hybrid Scheme (HYBRID)
+    \item Quadratic Upstream Interpolation for Convective Kinematics (QUICK)
+\end{itemize}
+
+We have also implemented the following schemes for the diffusion term:
+
+\begin{itemize}
+    \item Second-order central difference scheme
+    \item Fourth-order central difference scheme
+\end{itemize}
+
+For the methods to solve the linear system of equations, we have implemented the following method:
+% Instead, for the methods to solve the linear system of equations, we have gone a little further and implemented the following methods:
+
+\begin{itemize}
+    \item Symmetric Coupled Gauss-Seidel (SCGS)
+          % \item Semi-Implicit Method for Pressure Linked Equations (SIMPLE)
+\end{itemize}
+
+The main idea behind the implementation of these schemes and methods was to compare the various combinations of those, and to find out which one would be the most accurate and efficient for the given problem.
+
+In the following sections, we will describe the implementation of each of these schemes and methods, and we will also present the results obtained from the simulations.
+
+\textbf{Complete code can be found at \url{https://github.com/Bocchio01/CFD_Simulation_Engine}, along with its documentation and instructions on how to run it.}

@@ -1,0 +1,101 @@
+(*Tommaso Bocchietti*)
+(*ME663 - Computational Fluid Dynamics*)
+(*Ap coefficient calculations*)
+Clear["Global`*"];
+
+(*Define the Uvelocities and Vvelocities lists*)
+Hlabels={"WW","W","P","E","EE"};
+Vlabels={"SS","S","P","N","NN"};
+
+(*Initialize empty matrices*)
+\[Phi]=ConstantArray[0,{Length[Hlabels],Length[Vlabels]}];
+
+(*Populate the matrices using for loops*)
+For[i=1,i<=Length[Hlabels],i++,
+For[j=1,j<=Length[Vlabels],j++,
+\[Phi][[i,j]]=Symbol["\[Phi]"<>Hlabels[[i]]<>Vlabels[[j]]];
+];
+];
+
+(*Extrapolate velocity at (i,j)=(i,0) and (i,j)=(0,j)*)
+velWWtoEE=\[Phi][[All,Ceiling[Length[Vlabels]/2]]];
+velSStoNN=\[Phi][[Ceiling[Length[Hlabels]/2]]];
+
+(*Fix lenght as adapting*)
+ptsWWtoEE=Table[{i*\[CapitalDelta]x,velWWtoEE[[i+3]]},{i,-2,2}];
+ptsSStoNN = Table[{i*\[CapitalDelta]y,velSStoNN[[i+3]]},{i,-2,2}];
+
+(*phi is an alias to access the element of \[Phi] more easly*)
+phi[i_,j_]:= \[Phi][[i-3,j-3]];
+(*phi[i_,j_]:= 0;*)
+
+(*Define a list of labels for final Ap coefficients*)
+ApLabels="Ap"<>ToString[#]&/@Flatten[\[Phi]];
+
+(*General definition of convection and diffusion discretized equations*)
+Convection[\[Phi]e_, \[Phi]w_, \[Phi]n_, \[Phi]s_] :=(
+   (\[Phi]e[[1]]*Max[Fe\[Phi], 0] + \[Phi]e[[2]]*Min[Fe\[Phi], 0])-
+(\[Phi]w[[1]]*Max[Fw\[Phi], 0] + \[Phi]w[[2]]*Min[Fw\[Phi], 0]) +
+(\[Phi]n[[1]]*Max[Fn\[Phi], 0] + \[Phi]n[[2]]*Min[Fn\[Phi], 0])-
+(\[Phi]s[[1]]*Max[Fs\[Phi], 0] + \[Phi]s[[2]]*Min[Fs\[Phi], 0])
+);
+
+ConvectionCDS[\[Phi]e_, \[Phi]w_, \[Phi]n_, \[Phi]s_] :=(
+   (\[Phi]e*Fe\[Phi] )-(\[Phi]w*Fw\[Phi]) +
+(\[Phi]n*Fn\[Phi])- (\[Phi]s*Fs\[Phi])
+);
+
+Diffusion[dd\[Phi]x_ , dd\[Phi]y_]:=\[Nu]*(dd\[Phi]x+dd\[Phi]y)*\[CapitalDelta]x*\[CapitalDelta]y;
+
+(*Convection schemes*)
+(*UDS Scheme for convection*)
+UDS\[Phi]e = {phi[+0,+0], phi[+1,+0]};
+UDS\[Phi]w = {phi[-1,+0], phi[+0,+0]};
+UDS\[Phi]n = {phi[+0,+0], phi[+0,+1]};
+UDS\[Phi]s = {phi[+0,-1], phi[+0,+0]};
+
+(*USD computing and sign correction (change sign to all elements except the ApPP one)*)
+UDSAp=Table[D[Convection[UDS\[Phi]e, UDS\[Phi]w, UDS\[Phi]n, UDS\[Phi]s],\[Phi]Vel],{\[Phi]Vel,Flatten[\[Phi]]}];
+UDSAp=MapIndexed[If[First[#2]!=Ceiling[Length[UDSAp]/2],-#1,#1]&,UDSAp];
+
+(*UDS Scheme for convection*)
+CDS\[Phi]e = 1/2*(phi[+0,+0]+phi[+1,+0]);
+CDS\[Phi]w = 1/2*(phi[-1,+0]+phi[+0,+0]);
+CDS\[Phi]n = 1/2*(phi[+0,+0]+phi[+0,+1]);
+CDS\[Phi]s = 1/2*(phi[+0,-1]+phi[+0,+0]);
+
+(*CDS computing and sign correction (change sign to all elements except the ApPP one)*)
+CDSAp=Table[D[ConvectionCDS[CDS\[Phi]e, CDS\[Phi]w, CDS\[Phi]n, CDS\[Phi]s],\[Phi]Vel],{\[Phi]Vel,Flatten[\[Phi]]}];
+CDSAp=MapIndexed[If[First[#2]!=Ceiling[Length[CDSAp]/2],-#1,#1]&,CDSAp];
+
+(*QUICK Scheme for convection*)
+(*Partition[points[[1]],3,1] -> Sliding windows of 3 points amplitude*)
+(*InterpolatingPolynomial[#,x]&/@ -> Apply interpolation over each set of points*)
+QUICK\[Phi]e=InterpolatingPolynomial[#,x]&/@Partition[ptsWWtoEE,3,1][[2;;3]]/. x->\[CapitalDelta]x/2;
+QUICK\[Phi]w=InterpolatingPolynomial[#,x]&/@Partition[ptsWWtoEE,3,1][[1;;2]]/. x->-\[CapitalDelta]x/2;
+QUICK\[Phi]n=InterpolatingPolynomial[#,y]&/@Partition[ptsSStoNN,3,1][[2;;3]]/. y->\[CapitalDelta]y/2;
+QUICK\[Phi]s=InterpolatingPolynomial[#,y]&/@Partition[ptsSStoNN,3,1][[1;;2]]/. y->-\[CapitalDelta]y/2;
+
+(*QUICK computing and sign correction (change sign to all elements except the ApPP one)*)
+QUICKAp=Table[D[Convection[QUICK\[Phi]e, QUICK\[Phi]w, QUICK\[Phi]n, QUICK\[Phi]s],\[Phi]Vel],{\[Phi]Vel,Flatten[\[Phi]]}];
+QUICKAp=MapIndexed[If[First[#2]!=Ceiling[Length[QUICKAp]/2],-#1,#1]&,QUICKAp];
+
+(*Diffusion schemes*)
+(*Second order scheme for diffusion*)
+dd\[Phi]x2=D[InterpolatingPolynomial[ptsWWtoEE[[2;;4]],x], {x,2}]/. x->0;
+dd\[Phi]y2=D[InterpolatingPolynomial[ptsSStoNN[[2;;4]],y], {y,2}]/. y->0;
+
+(*DIF2 computing and sign correction (change sign to the ApPP element only)*)
+DIF2Ap=Table[D[Diffusion[dd\[Phi]x2,dd\[Phi]y2],\[Phi]Vel],{\[Phi]Vel,Flatten[\[Phi]]}];
+DIF2Ap=MapIndexed[If[First[#2]==Ceiling[Length[DIF2Ap]/2],-#1,#1]&,DIF2Ap];
+
+(*Fourth order scheme for diffusion*)
+dd\[Phi]x4=D[InterpolatingPolynomial[ptsWWtoEE[[1;;5]],x], {x,2}]/. x->0;
+dd\[Phi]y4=D[InterpolatingPolynomial[ptsSStoNN[[1;;5]],y], {y,2}]/. y->0;
+
+(*DIF4 computing and sign correction (change sign to the ApPP element only)*)
+DIF4Ap=Table[D[Diffusion[dd\[Phi]x4,dd\[Phi]y4],\[Phi]Vel],{\[Phi]Vel,Flatten[\[Phi]]}];
+DIF4Ap=MapIndexed[If[First[#2]==Ceiling[Length[DIF4Ap]/2],-#1,#1]&,DIF4Ap];
+
+(*Final coefficients table*)
+TableForm[Transpose[{ApLabels,UDSAp,CDSAp, QUICKAp, DIF2Ap, DIF4Ap}], TableHeadings->{None,{"Ap\[Phi]HV","Convection UDS","Convection CDS", "Convection QUICK", "Diffusion 2", "DIffusion 4"}}]

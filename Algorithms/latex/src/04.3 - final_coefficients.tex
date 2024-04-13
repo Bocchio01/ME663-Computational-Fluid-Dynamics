@@ -1,0 +1,60 @@
+\subsection{Final coefficients}
+\label{subsec:final_coefficients}
+
+The final coefficients are obtained by reassembling the convection and diffusion coefficients, based on the FVM result:
+
+\begin{equation}
+    FVM_{\text{Convection}} - FVM_{\text{Diffusion}} = 0 \rightarrow (A^\phi) = (A^\phi)_{\text{Convection}} - (A^\phi)_{\text{Diffusion}}
+\end{equation}
+
+
+\eject
+\newgeometry{margin=12mm}
+\pdfpagewidth=275mm \pdfpageheight=150mm
+
+\begin{center}
+    \begin{table}[H]
+        \centering
+        \caption{Final $Ap$ coefficients for convection and diffusion using different schemes}
+        \begin{tabular}{|l|l|l|l|l|l|}
+            \hline
+            \textbf{Ap}   & \textbf{Convection UDS} & \textbf{Convection CDS} & \textbf{Convection QUICK}                                                                     & \textbf{Diffusion 2° order}      & \textbf{Diffusion 4° order}          \\
+            \hline
+            $Ap\phi WWSS$ & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WWS$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WWP$  & $0$                     & $0$                     & $-\frac{1}{8} \max (0,Fw\phi )$                                                               & $0$                              & $-\frac{\Delta y \nu }{12 \Delta x}$ \\
+            $Ap\phi WWN$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WWNN$ & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WSS$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WS$   & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WP$   & $\max (0,Fw\phi )$      & $\frac{Fw\phi}{2}$      & $\frac{1}{8} \max (0,Fe\phi )+\frac{3}{4} \max (0,Fw\phi )+\frac{3}{8} \min (0,Fw\phi )$      & $\frac{\Delta y \nu }{\Delta x}$ & $\frac{4 \Delta y \nu }{3 \Delta x}$ \\
+            $Ap\phi WN$   & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi WNN$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi PSS$  & $0$                     & $0$                     & $-\frac{1}{8} \max (0,Fs\phi )$                                                               & $0$                              & $-\frac{\Delta x \nu }{12 \Delta y}$ \\
+            $Ap\phi PS$   & $\max (0,Fs\phi )$      & $\frac{Fs\phi}{2}$      & $\frac{1}{8} \max (0,Fn\phi )+\frac{3}{4} \max (0,Fs\phi )+\frac{3}{8} \min (0,Fs\phi )$      & $\frac{\Delta x \nu }{\Delta y}$ & $\frac{4 \Delta x \nu }{3 \Delta y}$ \\
+            \hline
+            % $Ap\phi PP$   & $\max (0,Fe\phi )+\max (0,Fn\phi )-\min (0,Fs\phi )-\min (0,Fw\phi )$ & $\frac{Fe\phi}{2}+\frac{Fn\phi}{2}-\frac{Fs\phi}{2}-\frac{Fw\phi}{2}$ & $\frac{3}{4} \max (0,Fe\phi )+\frac{3}{8} \min (0,Fe\phi )+\frac{3}{4} \max (0,Fn\phi )+\frac{3}{8} \min (0,Fn\phi )-\frac{3}{8} \max (0,Fs\phi )-\frac{3}{4} \min (0,Fs\phi )-\frac{3}{8} \max (0,Fw\phi )-\frac{3}{4} \min (0,Fw\phi )$ & $-\Delta x \Delta y \nu  \left(-\frac{2}{\Delta x^2}-\frac{2}{\Delta y^2}\right)$ & $-\Delta x \Delta y \nu  \left(-\frac{5}{2 \Delta x^2}-\frac{5}{2 \Delta y^2}\right)$ \\
+            $Ap\phi PP$   & $\sum_{nb} Ap\phi$      & $\sum_{nb} Ap\phi$      & $\sum_{nb} Ap\phi$                                                                            & $\sum_{nb} Ap\phi$               & $\sum_{nb} Ap\phi$                   \\
+            \hline
+            $Ap\phi PN$   & $-\min (0,Fn\phi )$     & $-\frac{Fn\phi}{2}$     & $\frac{1}{8} (-3) \max (0,Fn\phi )-\frac{3}{4} \min (0,Fn\phi )-\frac{1}{8} \min (0,Fs\phi )$ & $\frac{\Delta x \nu }{\Delta y}$ & $\frac{4 \Delta x \nu }{3 \Delta y}$ \\
+            $Ap\phi PNN$  & $0$                     & $0$                     & $\frac{1}{8} \min (0,Fn\phi )$                                                                & $0$                              & $-\frac{\Delta x \nu }{12 \Delta y}$ \\
+            $Ap\phi ESS$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi ES$   & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi EP$   & $-\min (0,Fe\phi )$     & $-\frac{Fe\phi}{2}$     & $\frac{1}{8} (-3) \max (0,Fe\phi )-\frac{3}{4} \min (0,Fe\phi )-\frac{1}{8} \min (0,Fw\phi )$ & $\frac{\Delta y \nu }{\Delta x}$ & $\frac{4 \Delta y \nu }{3 \Delta x}$ \\
+            $Ap\phi EN$   & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi ENN$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi EESS$ & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi EES$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi EEP$  & $0$                     & $0$                     & $\frac{1}{8} \min (0,Fe\phi )$                                                                & $0$                              & $-\frac{\Delta y \nu }{12 \Delta x}$ \\
+            $Ap\phi EEN$  & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            $Ap\phi EENN$ & $0$                     & $0$                     & $0$                                                                                           & $0$                              & $0$                                  \\
+            \hline
+        \end{tabular}
+        \label{tab:Ap_coefficients}
+    \end{table}
+\end{center}
+
+\eject
+\restoregeometry
+\pdfpagewidth=210mm
+\pdfpageheight=297mm

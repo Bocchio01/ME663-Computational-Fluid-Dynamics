@@ -1,0 +1,51 @@
+\subsection{Equations Coupling}
+\label{subsec:equations_coupling}
+
+At this point, one could ask how the three equations we have presented so far are related to each other.
+The answer is in the continuity equation, which is the key to couple the velocity and pressure fields (and indeed, have a close form of the system with 3 equations \ref{eq:INS_steady_2D_discretized_continuity_final} \ref{eq:INS_steady_2D_discretized_momentum_x_final} \ref{eq:INS_steady_2D_discretized_momentum_y_final} and 3 unknowns).
+
+Given that the continuity equation is defined for a given $p-CV$ and that involve the all the four velocity components at the faces of the control volume, it should be intuitive that in order to solve the equilibrium across one cell, we need to have a system of equations that involve all the four velocity components.
+
+By recalling the representation with index notation for the $p-CV$, we can compose our system of equations.
+
+\begin{figure}[H]
+    \centering
+    \def\nCV{1}
+    \def\dX{5cm}
+    \def\dY{5cm}
+
+    \begin{tikzpicture}[every node/.style={font=\huge}]
+
+        \draw (0, 0) -- ++(\dX, 0) -- ++(0, \dY) -- ++(-\dX, 0) -- cycle;
+
+        \node at (\dX/2, \dY/2) {$P_{i,j}$};
+        \draw[thick, red, ->] (\dX/2, \dY/2)++(\dX/4, 0) -- ++(\dX/2, 0) node[pos=1, above] {$u_{i,j}$};
+        \draw[thick, red, ->] (\dX/2, \dY/2)++(-\dX/2-\dX/4, 0) -- ++(\dX/2, 0) node[pos=0, above] {$u_{i-1,j}$};
+        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0,  \dY/4) -- ++(0, \dY/2) node[pos=1, right] {$v_{i,j}$};
+        \draw[thick, blue, ->] (\dX/2, \dY/2)++(0, -\dY/2-\dY/4) -- ++(0, \dY/2) node[pos=0, right] {$v_{i,j-1}$};
+
+        \node at (\dX/7, \dY/10) {$i,j$};
+
+    \end{tikzpicture}
+    \caption{Generic $p-CV$ with the velocity components at the faces.}
+\end{figure}
+
+\begin{equation}
+    \begin{cases}
+        \text{Mom. } u_{i-1, j} \\
+        \text{Mom. } u_{i, j}   \\
+        \text{Mom. } v_{i, j-1} \\
+        \text{Mom. } v_{i, j}   \\
+        \text{Con.}
+    \end{cases}
+    =
+    \begin{cases}
+        (A_P^u)_{i-1,j} u_{i-1,j}                                       & = \sum_{nb} (A_{nb}^u)_{i-1,j} (u_{nb})_{i-1,j} + (p_{i-1,j} - p_{i,j}) \Delta y \\
+        (A_P^u)_{i,j} u_{i,j}                                           & = \sum_{nb} (A_{nb}^u)_{i,j} (u_{nb})_{i,j} + (p_{i,j} - p_{i+1,j}) \Delta y     \\
+        (A_P^v)_{i,j-1} v_{i,j-1}                                       & = \sum_{nb} (A_{nb}^v)_{i,j-1} (v_{nb})_{i,j-1} + (p_{i,j-1} - p_{i,j}) \Delta x \\
+        (A_P^v)_{i,j} v_{i,j}                                           & = \sum_{nb} (A_{nb}^v)_{i,j} (v_{nb})_{i,j} + (p_{i,j} - p_{i,j+1}) \Delta x     \\
+        (u_{i,j} - u_{i-1,j}) \Delta y + (v_{i,j} - v_{i,j-1}) \Delta x & = 0
+    \end{cases}
+\end{equation}
+
+The system of equations is composed by 5 equations and 5 unknowns ($u_{i-1,j}$, $u_{i,j}$, $v_{i,j-1}$, $v_{i,j}$, $p_{i,j}$), and it's the result of the coupling of the momentum and continuity equations across a generic $p-CV$.

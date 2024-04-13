@@ -1,0 +1,108 @@
+\subsection{Diffusion Schemes}
+\label{subsec:diffusion_schemes}
+
+In this section, we will present the schemes related to the diffusion terms of the discretized governing equations, which were derived in Section \ref{subsec:application_of_the_finite_volume_method}.
+
+The general idea here is to approximate the diffusion term using its Taylor expansion and then evaluate the derivative at the cell faces.
+As a recall, the definition of the Taylor expansion of order $n$ is:
+
+\begin{equation}
+    f(x) = f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2!}(x - x_0)^2 + \dots + \frac{f^n(x_0)}{n!}(x - x_0)^n + \mathbf{O}((x - x_0)^{n+1})
+\end{equation}
+
+
+
+%
+% 2°-order scheme
+%
+\subsubsection{$2^{nd}$-order scheme}
+
+The $2^{nd}$-order scheme approximate the diffusion term using the Taylor expansion up to the second order.
+
+We can start by writing the polynomial that approximates by interpolation the values of the variable $u$ at the cell faces.
+To do so, we can use the Lagrange interpolation polynomial, previously defined in Equation \ref{eq:langrange_interpolation_polynomial}.
+Since we are now analyzing the $2^{nd}$-order scheme, we will use $n = 2+1 = 3$ points to interpolate.
+
+As before, we can use \texttt{Mathematica} to obtain the polynomial that approximates function $u(x)$ as:
+
+\begin{equation}
+    u(x) \approx \frac{2 (\Delta x)^2 u_{P}+x^2 (u_{E}-2 u_{P}+u_{W})+\Delta x x (u_{E}-u_{W})}{2 (\Delta x)^2}
+\end{equation}
+
+We can now proceed by evaluating the second derivative of the polynomial as:
+
+\begin{equation}
+    \frac{\partial^2 u}{\partial x^2} \approx \frac{u_{E} - 2 u_{P} + u_{W}}{(\Delta x)^2}
+\end{equation}
+
+And finally, we can the approximated second derivative at the point of interest $x = 0$ as:
+
+\begin{equation}
+    \left. \frac{\partial^2 u}{\partial x^2} \right|_P \approx \frac{u_{E} - 2 u_{P} + u_{W}}{(\Delta x)^2}
+\end{equation}
+
+Given the definition of the diffusion term of $u$ along $x$ in Equation \ref{eq:INS_steady_2D_discretized_diffusion}, we can write the $2^{nd}$-order scheme as:
+
+\begin{equation}
+    \nu \frac{\partial^2 u}{\partial x^2} = \nu \frac{u_{E} - 2 u_{P} + u_{W}}{(\Delta x)^2}
+\end{equation}
+
+With a similar approach, we can obtain the $2^{nd}$-order scheme for the $y$ direction as:
+
+\begin{equation}
+    \nu \frac{\partial^2 u}{\partial y^2} = \nu \frac{u_{N} - 2 u_{P} + u_{S}}{(\Delta y)^2}
+\end{equation}
+
+The same procedure can be applied to the $v$ momentum equation, obtaining the following results:
+
+\begin{gather}
+    \nu \frac{\partial^2 u}{\partial x^2} + \nu \frac{\partial^2 u}{\partial y^2} = \\
+    \frac{\Delta y \nu  (u_{E}-2 u_{P}+u_{W})}{\Delta x} + \\
+    \frac{\Delta x \nu  (u_{N}-2 u_{P}+u_{S})}{\Delta y}
+\end{gather}
+
+Since we are interested in the $A_P^\phi$ and $A_{nb}^\phi$ coefficients as written in the form of Equation \ref{eq:coefficients_form_system}, with the help of \texttt{Mathematica}, we can regroup the terms based on the velocity components, perform some sign manipulations and obtain the coefficients for the diffusion term using the $2^{nd}$-order scheme for both the $u$ and $v$ momentum equations.
+
+\begin{equation}
+    \text{Diffusion Coefficients order} 2^{nd} = { \textbf{See table \ref{tab:Ap_coefficients}} }
+\end{equation}
+
+
+
+%
+% 4°-order scheme
+%
+\subsubsection{$4^{th}$-order scheme}
+
+The $4^{th}$-order scheme approximate the diffusion term using the Taylor expansion up to the fourth order.
+
+Since the reasoning is similar to the $2^{nd}$-order scheme, we can directly write the approximated second derivative at the point of interest $x = 0$ as:
+
+\begin{equation}
+    \left. \frac{\partial^2 u}{\partial x^2} \right|_P \approx -\frac{u_{WW} - 16 u_{W} + 30 u_{P} - 16 u_{E} + u_{EE}}{12 (\Delta x)^2}
+\end{equation}
+
+Given the definition of the diffusion term of $u$ along $x$ in Equation \ref{eq:INS_steady_2D_discretized_diffusion}, we can write the $4^{th}$-order scheme as:
+
+\begin{equation}
+    \nu \frac{\partial^2 u}{\partial x^2} = \nu -\frac{u_{WW} - 16 u_{W} + 30 u_{P} - 16 u_{E} + u_{EE}}{12 (\Delta x)^2}
+\end{equation}
+
+With a similar approach, we can obtain the $4^{th}$-order scheme for the $y$ direction as:
+
+\begin{equation}
+    \nu \frac{\partial^2 u}{\partial y^2} = \nu -\frac{u_{WW} - 16 u_{W} + 30 u_{P} - 16 u_{E} + u_{EE}}{12 (\Delta y)^2}
+\end{equation}
+
+The same procedure can be applied to the $v$ momentum equation, obtaining the following results:
+
+\begin{gather}
+    \int_{V} \nu \frac{\partial^2 u}{\partial x^2} + \nu \frac{\partial^2 u}{\partial y^2} \space dV = \\
+    -\frac{\nu}{12}  \left(\frac{u_{WW} - 16 u_{W} + 30 u_{P} - 16 u_{E} + u_{EE}}{(\Delta x)^2} + \frac{u_{WW} - 16 u_{W} + 30 u_{P} - 16 u_{E} + u_{EE}}{(\Delta y)^2} \right) \Delta x \Delta y
+\end{gather}
+
+Since we are interested in the $A_P^\phi$ and $A_{nb}^\phi$ coefficients as written in the form of Equation \ref{eq:coefficients_form_system}, with the help of \texttt{Mathematica}, we can regroup the terms based on the velocity components, perform some sign manipulations and obtain the coefficients for the diffusion term using the $4^{th}$-order scheme for both the $u$ and $v$ momentum equations.
+
+\begin{equation}
+    \text{Diffusion Coefficients order } 4^{th} = { \textbf{See table \ref{tab:Ap_coefficients}} }
+\end{equation}

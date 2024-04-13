@@ -1,0 +1,17 @@
+\section{Symmetric Coupled Gauss-Seidel (SCGS)}
+\label{sec:scgs}
+
+So far we have presented the set of differential equations that govern the fluid flow, and we have also discretized them using the FVM and applying different schemes (for the convection and diffusion terms).
+
+In the following we will discuss the \acrfull{scgs} method by \cite[Vanka (1986)]{VANKA1986138}, which combine all the information we have presented so far, and will allow us to solve the discretized equations iteratively.
+
+Notice that when we say \textit{solve the equations}, we mean to find the values of the velocity components and the pressure at each cell of the domain, namely $U(x_i, y_j)$ \& $V(x_i, y_j)$ \& $P(x_i, y_j)$, so to have a complete description of the flow field.
+
+\input{src/05.1 - variable_correction_concept}
+\input{src/05.2 - equations_coupling}
+\input{src/05.3 - residual_concept}
+\input{src/05.4 - guass_seidel_iterative_method}
+\input{src/05.5 - vanka_approach}
+\input{src/05.6 - boundary_conditions_for_lid_driven}
+\input{src/05.7 - convergence_criterion}
+

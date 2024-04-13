@@ -1,0 +1,203 @@
+\subsection{Application of the Finite Volume Method}
+\label{subsec:application_of_the_finite_volume_method}
+
+Having defined our working framework, we can now proceed with the application of the Finite Volume Method (FVM) to the incompressible Navier-Stokes equations.
+We know that the definition of the FVM is based on the integration of the given PDE equation over the control volume, such as:
+
+\begin{equation}
+    \text{FVM}:=\int_{V} \text{PDE} \space dV = \int_{s}^{n} \int_{w}^{e} \text{PDE} \space dxdy
+\end{equation}
+
+Where $s$, $n$, $w$ and $e$ are the south, north, west and east faces of the control volume, respectively.
+
+For our case, we have a set of three equations, the continuity equation \ref{eq:INS_continuity_2D}, and the momentum equations \ref{eq:INS_momentum_u_steady_2D} and \ref{eq:INS_momentum_y_steady_2D}.
+
+We can now proceed by applying the FVM to each of these equations separately.
+
+Notice that in the followings, we will assume:
+
+\begin{align}
+    u & = u(x) \\
+    v & = v(y)
+    \label{eq:assumptions_over_velocity_components}
+\end{align}
+
+Which underline the independence of the velocity components from the $y$ and $x$ coordinates, respectively.
+
+
+
+\subsubsection{Continuity Equation (FVM)}
+
+The FVM for the continuity equation \ref{eq:INS_continuity_2D} is given by:
+
+\begin{equation}
+    \int_{V} \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} dV = 0
+    \label{eq:INS_steady_2D_discretized_continuity}
+\end{equation}
+
+Evaluating the integral based on the assumption \ref{eq:assumptions_over_velocity_components}, we obtain:
+
+\begin{gather}
+    \int_{s}^{n} \int_{w}^{e} \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} dxdy = 0 \\
+    \int_{s}^{n} \left[\int_{w}^{e} \frac{\partial u}{\partial x} dx \right] dy + \int_{w}^{e} \left[\int_{s}^{n} \frac{\partial v}{\partial y} dy \right] dx = 0 \\
+    \int_{s}^{n} \left[ u_e - u_w \right] dy + \int_{w}^{e} \left[ v_n - v_s \right] dx = 0 \\
+    (u_e - u_w) \Delta y + (v_n - v_s) \Delta x = 0
+\end{gather}
+
+Where $\Delta x$ and $\Delta y$ are the dimensions of the control volume in the $x$ and $y$ directions, respectively.
+
+Since we will be dealing with indexes for the implementation of the code, we can rewrite the equation as:
+
+\begin{equation}
+    (u_{i} - u_{i-1}) \Delta y + (v_{j} - v_{j-1}) \Delta x = 0
+    \label{eq:INS_steady_2D_discretized_continuity_final}
+\end{equation}
+
+
+
+\subsubsection{Momentum Equations (FVM)}
+
+The FVM for the momentum equations \ref{eq:INS_momentum_u_steady_2D} and \ref{eq:INS_momentum_y_steady_2D} is given by:
+
+\begin{align}
+    \label{eq:INS_steady_x_momentum_FVM}
+    \int_{V} \frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y} + \frac{\partial p}{\partial x} - \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \space dV & = 0 \\
+    \label{eq:INS_steady_y_momentum_FVM}
+    \int_{V} \frac{\partial u v}{\partial x} + \frac{\partial v v}{\partial y} + \frac{\partial p}{\partial y} - \nu \left( \frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} \right) \space dV & = 0
+\end{align}
+
+Since the equations are very similar, we will only derive the FVM for the first momentum equation (along the $x$ direction), and then we will present the final form for both equations.
+
+Evaluating the integral based on the assumption \ref{eq:assumptions_over_velocity_components}, we obtain:
+
+\begin{align}
+    \int_{V} \underbrace{\frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y}}_{\text{Convection terms}} + \underbrace{\frac{\partial p}{\partial x}}_{\text{Source term}} - \underbrace{\nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right)}_{\text{Diffusion term}} \space dV & = 0
+    \label{eq:FVM_momentum_x_direction}
+\end{align}
+
+We can now proceed by discretizing the convection, diffusion and source terms separately.
+
+
+
+%
+% Concetion term
+%
+\paragraph{Convection Term}
+
+The finite volume discretization of the convection term is given by:
+
+\begin{equation}
+    \int_{V} \frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y} \space dV = 0
+\end{equation}
+
+We further split the convection term into its directional components, so to solve them separately:
+
+\begin{gather}
+    \int_{s}^{n} \int_{w}^{e} \frac{\partial u u}{\partial x} \space dxdy = \\
+    \int_{s}^{n} \left[ \int_{w}^{e} \frac{\partial u u}{\partial x} \space dx \right] dy = \\
+    \int_{s}^{n} \left[ u_e u_e - u_w u_w \right] dy = \\
+    (u_e u_e - u_w u_w) \Delta y
+\end{gather}
+
+Where $\Delta y$ is the dimension of the control volume in the $y$ direction.
+
+Since our equation is highly non-linear, we can try to linearize it by introducing the concept of:
+
+\begin{itemize}
+    \item Advecting velocity: previous step velocity $\hat{u_e} = \frac{1}{2} \left(u_P + u_E\right), \hat{u_w} = \frac{1}{2} \left(u_W + u_P\right) \rightarrow $ Known.
+    \item Advected velocity: current step velocity $u_e, u_w\rightarrow $ Unknown, evaluated using the Convection schemes (following chapter).
+\end{itemize}
+
+We can then rewrite the convection term for the $x$ direction as:
+
+\begin{equation}
+    \int_{V} \frac{\partial u u}{\partial x} \space dV = (\hat{u_e} u_e - \hat{u_w} u_w) \Delta y
+\end{equation}
+
+The same procedure can be applied to the convection term for the $y$ direction, and the final form for the convection term is given by:
+
+\begin{equation}
+    \int_{V} \frac{\partial u u}{\partial x} + \frac{\partial v u}{\partial y} \space dV = (\hat{u_e} u_e - \hat{u_w} u_w) \Delta y + (\hat{v_n} u_n - \hat{v_s} u_s) \Delta x
+    \label{eq:INS_steady_2D_discretized_convection}
+\end{equation}
+
+
+
+%
+% Diffusion term
+%
+\paragraph{Diffusion Term}
+
+The finite volume discretization of the diffusion term is given by:
+
+\begin{equation}
+    \int_{V} \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \space dV = 0
+\end{equation}
+
+We further split the diffusion term into its directional components, so to solve them separately:
+
+\begin{gather}
+    \int_{s}^{n} \int_{w}^{e} \nu \left( \frac{\partial^2 u}{\partial x^2} \right) \space dxdy = \\
+    \int_{s}^{n} \left[ \int_{w}^{e} \frac{\partial}{\partial x} \left(\nu \frac{\partial u}{\partial x} \right) \space dx \right] dy = \\
+    \int_{s}^{n} \left[ \nu \frac{\partial u}{\partial x} \bigg|_e - \nu \frac{\partial u}{\partial x} \bigg|_w \right] dy = \\
+    \nu \left( \frac{\partial u}{\partial x} \bigg|_e - \frac{\partial u}{\partial x} \bigg|_w \right) \Delta y
+\end{gather}
+
+Where the terms $\left(\frac{\partial u}{\partial x} \bigg|_{Position}\right)$ will be approximated using a Taylor expansion.
+
+In particular, our final form for the diffusion term for the $x$ direction is given by:
+
+\begin{equation}
+    \int_{V} \nu \left( \frac{\partial^2 u}{\partial x^2} \right) \space dV = \nu \left( \approx \frac{\partial^2 u}{\partial x^2} \bigg|_{x \to 0} \right) \Delta x \Delta y
+\end{equation}
+
+The same procedure can be applied to the diffusion term for the $y$ direction, and the final form for the diffusion term is given by:
+
+\begin{equation}
+    \int_{V} \nu \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \space dV = \nu \left( \approx \frac{\partial^2 u}{\partial x^2} \bigg|_{x \to 0} \right) \Delta x \Delta y + \nu \left( \approx \frac{\partial^2 u}{\partial y^2} \bigg|_{y \to 0} \right) \Delta x \Delta y
+    \label{eq:INS_steady_2D_discretized_diffusion}
+\end{equation}
+
+More details on the approximation of the second order derivatives will be reported in the following chapters.
+
+
+
+%
+% Source term
+%
+\paragraph{Source Term}
+
+The finite volume discretization of the source term is given by:
+
+\begin{equation}
+    \int_{V} - \frac{\partial p}{\partial x} \space dV = 0
+\end{equation}
+
+Evaluating the integral based on the assumption \ref{eq:assumptions_over_velocity_components}, we obtain:
+
+\begin{gather}
+    \int_{s}^{n} \int_{w}^{e} - \frac{\partial p}{\partial x} \space dxdy = \\
+    \int_{s}^{n} \left[ - \int_{w}^{e} \frac{\partial p}{\partial x} \space dx \right] dy = \\
+    \int_{s}^{n} \left[ - p_e + p_w \right] dy = \\
+    - (p_e - p_w) \Delta y
+\end{gather}
+
+
+
+%
+% Final form
+%
+\paragraph{Final Form}
+
+We can now substitute the discretized convection, diffusion and source terms into the momentum equations for both the $x$ and $y$ directions (\ref{eq:INS_steady_x_momentum_FVM} \ref{eq:INS_steady_y_momentum_FVM}), and obtain the final form for the discretized momentum equations:
+
+\begin{align}
+    \label{eq:INS_steady_2D_discretized_momentum_x_final}
+    (\hat{u_e} u_e - \hat{u_w} u_w) \Delta y + (\hat{v_n} u_n - \hat{v_s} u_s) \Delta x - \nu \left( \approx \frac{\partial^2 u}{\partial x^2} \bigg|_{x \to 0} +  \approx \frac{\partial^2 u}{\partial y^2} \bigg|_{y \to 0} \right) \Delta x \Delta y - (p_e - p_w) \Delta y & = 0 \\
+    \label{eq:INS_steady_2D_discretized_momentum_y_final}
+    (\hat{u_e} v_e - \hat{u_w} v_w) \Delta y + (\hat{v_n} v_n - \hat{v_s} v_s) \Delta x - \nu \left( \approx \frac{\partial^2 v}{\partial x^2} \bigg|_{x \to 0} +  \approx \frac{\partial^2 v}{\partial y^2} \bigg|_{y \to 0} \right) \Delta x \Delta y - (p_n - p_s) \Delta x & = 0
+\end{align}
+
+
+
+
