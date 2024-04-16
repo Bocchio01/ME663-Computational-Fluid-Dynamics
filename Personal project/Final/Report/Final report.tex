@@ -1,0 +1,87 @@
+\documentclass{assignment}
+
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{adjustbox}
+\usepackage{titlesec}
+\usepackage{soul}
+\usepackage{csvsimple}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usetikzlibrary{shapes, arrows}
+
+\usetikzlibrary{calc,patterns,angles,quotes}
+\setlength{\parindent}{0pt}
+
+\hypersetup{
+pdftitle={ME663 - Computational Fluid Dynamics},
+pdfsubject={Personal project report},
+pdfauthor={Tommaso Bocchietti}
+}
+
+\title{Post Flight Drag Coefficient Analysis of a Model Rocket Using Ansys Fluent}
+\author{Tommaso Bocchietti}
+\date{A.Y. 2023/24 - W24}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\textwidth]{./pdf/UniversityOfWaterloo_logo_vert_pms}
+	\label{fig:University_Of_Waterloo_logo}
+\end{figure}
+
+\vspace*{\fill}
+
+Personal project report. \\
+
+Instructor: Prof. Fue-Sang Lien \\
+Course: ME663 - Computational Fluid Dynamics \\
+Term: Winter 2024 \\
+
+\clearpage
+\tableofcontents
+
+\clearpage
+\listoffigures
+\listoftables
+\lstlistoflistings
+% \printglossary[type=\acronymtype]
+
+\clearpage
+\input{src/01 - introduction.tex}
+\input{src/02 - methodology.tex}
+\input{src/03 - CAD_modeling.tex}
+\input{src/04 - CFD_simulation.tex}
+\input{src/05 - analysis_and_validation.tex}
+\input{src/06 - conclusions.tex}
+
+
+\clearpage
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+\clearpage
+\appendix
+\label{sec:appendix}
+
+\section{\texttt{Ansys Fluent} settings for the CFD simulation}
+\lstinputlisting[
+	style=XML,
+	language=XML,
+	caption=Settings applied to the CFD simulation in \texttt{Ansys Fluent}.,
+]{files/report.xml}
+
+\section{\texttt{MATLAB} code used for the validation phase}
+\lstinputlisting[
+	language=Matlab,
+	caption=\texttt{MATLAB} code used for validating the CFD simulation result against flight data and simulation from \texttt{OpenRocket}.,
+]{files/Main.m}
+
+
+\end{document}

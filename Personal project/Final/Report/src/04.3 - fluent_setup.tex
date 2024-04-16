@@ -1,0 +1,42 @@
+\subsection{Fluent setup}
+\label{subsec:fluent_setup}
+
+The next step in the CFD simulation is to set up \texttt{Fluent} solver.
+
+Here, many configurations could be set, such as the turbulence model, the solver type, the discretization scheme, etc.
+Given our inexperience with CFD simulations, we opted for the default settings for most of the parameters with some exception that are reported in the following subsections.
+
+
+\subsubsection{Turbulence model}
+\label{subsubsec:turbulence_model}
+
+One of the most important parameters to set in the CFD simulations is the turbulence model.
+
+The turbulence model is a mathematical model used to predict the effects of turbulence on the flow field.
+In our case, we opted for the \textit{k-$\omega$ SST} model, which is a widely used model for external aerodynamics simulations.
+
+The SST \textit{k-$\omega$} model is a two-equation eddy-viscosity model that basically combines both the \textit{k-$\omega$} and \textit{k-$\epsilon$} models.
+The use of this model allows for a good prediction of the flow field around the rocket, especially in the near-wall regions and transitional flows.
+
+To do so, we use a \textit{k-$\omega$} model in the inner parts of the boundary layer, making the model directly usable all the way down to the wall through the viscous sub-layer, hence the SST \textit{k-$\omega$} model can be used as a Low-Re turbulence model without any extra damping functions.
+The SST formulation also switches to a \textit{k-$\epsilon$} behaviour in the free-stream, avoiding the common \textit{k-$\omega$} problem that the model is too sensitive to the inlet free-stream turbulence properties.
+
+Refer to Menter \cite{Menter1994TwoequationET} for more details on the SST \textit{k-$\omega$} model.
+
+
+\subsubsection{Report definition}
+\label{subsubsec:report_definition}
+
+In the \texttt{Fluent} solver, it is possible to define the reports that will be generated during the simulation.
+
+In our case, we have defined a custom report for the computation of the drag coefficient.
+The only parameter that we had to modify to enhance the accuracy, was the reference area.
+
+For a simple model rocket, the reference area can be considered as the largest cross-sectional area of the body tube.
+In our case:
+
+\begin{equation}
+    A_{\text{ref}} = \pi \cdot \left( \frac{D}{2} \right)^2 = 0.0009079203 \quad [m^2]
+\end{equation}
+
+

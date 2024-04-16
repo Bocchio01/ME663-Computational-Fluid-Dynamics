@@ -1,0 +1,31 @@
+\subsection{Equation of motion \& Code implementation}
+\label{subsec:equation_of_motion}
+
+By combining all the forces acting on the rocket, we can write the equation of motion as:
+
+\begin{equation}
+    m(t) \ddot{z} + \frac{1}{2} \rho(z) A C_d \dot{z}^2 + m(t) g = F_{\text{thrust}}(t)
+    \label{eq:equation_of_motion}
+\end{equation}
+
+Where $z$ is the altitude of the rocket, $\dot{z}$ is the velocity of the rocket and $\ddot{z}$ is the acceleration of the rocket.
+
+As often happen in mechanical problem, the equation of motion is a second-order differential equation.
+To solve it, we can rewrite it as a system of first-order differential equations as:
+
+\begin{equation}
+    \begin{cases}
+        \dot{z} = v \\
+        \ddot{z} = \dot{v} = \frac{F_{\text{thrust}}(t) - \frac{1}{2} \rho(z) A C_d v^2 - m(t) g}{m(t)}
+    \end{cases}
+\end{equation}
+
+The system of equations can be solved using a simple \texttt{MATLAB} script, which is reported in Listing \ref{lst:rocket_flight_model}.
+
+\lstinputlisting[
+    language=Matlab,
+    caption={\texttt{MATLAB} script to compute the rocket flight model.},
+    label={lst:rocket_flight_model},
+]{files/rocket_flight_model.m}
+
+The full version of the code can be found in the appendix (see Section \ref{sec:appendix}).

@@ -1,0 +1,12 @@
+\section{Analysis and validation of the results}
+\label{sec:analysis_and_validation}
+
+Finally, we can proceed with the validation of the results.
+
+As previously mentioned in Section \ref{sec:methodology}, we are going to compare the results of the CFD simulations with both the flight data collected during the rocket launch and the results of the simulation run in \texttt{OpenRocket}.
+
+To do so, we have coded in \texttt{MATLAB} a simple model that simulate the dynamics of the rocket flight, which takes into account drag force, gravity, thrust force and mass reduction due to the fuel consumption.
+
+\input{src/05.1 - rocket_flight_physics_model.tex}
+\input{src/05.2 - equation_of_motion.tex}
+\input{src/05.3 - final_comparison.tex}

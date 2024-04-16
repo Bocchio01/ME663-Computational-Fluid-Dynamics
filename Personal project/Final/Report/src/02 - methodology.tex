@@ -1,0 +1,45 @@
+\section{Methodology}
+\label{sec:methodology}
+
+This project consists of three main steps: CAD modeling, CFD simulation, and analysis of the results.
+In this section, we will briefly describe each step and explain the tools and techniques used to carry out the analysis.
+
+\paragraph{CAD modeling}
+
+The first step in the analysis is to create a CAD model of the rocket.
+The model is used to define the geometry that will be analyzed in the CFD simulations.
+
+For this purpose, we opted for \texttt{CATIA V5}, a computer-aided design (CAD) software package from \texttt{Dassault Systèmes}.
+
+
+\paragraph{CFD simulation}
+
+The second step in the analysis is to set up and perform the CFD simulations of the model rocket.
+In this project, CFD simulations are used to calculate the drag coefficient ($C_d$) and obtain insights into the aerodynamic performance of the rocket.
+It has to be noted that simulations will be performed in a steady-state regime, and considering as velocity of the fluid $85\%$ of the peak one that the rocket reaches during the real flight.
+Considering the drag coefficient as a constant value across the whole range of velocities it's a strong assumption, and should be avoided in a real-world scenario.
+
+The CFD simulations were performed using \texttt{Ansys Fluent}, a computational fluid dynamics (CFD) software package from \texttt{Ansys Inc.}.
+This was our first time using a commercial CFD software package, and we found it to be a powerful tool for simulating complex fluid flow problems.
+
+
+\paragraph{Analysis and validation of the results}
+
+The final step is to try to validate the results of the CFD simulations.
+
+To do so, we will use \texttt{MATLAB} to code a simple physics model of the rocket's flight and compare it against two different sources of data:
+
+\begin{itemize}
+    \item \texttt{OpenRocket} simulations
+    \item Actual flight data of the rocket, collected during a previous launch
+\end{itemize}
+
+\texttt{OpenRocket} is an open-source software for model rocket design and simulation.
+It allows to select the engine and set the material properties of the rocket.
+By considering a mean value of the drag coefficient, the software is then able to predict the flight and the apogee altitude.
+
+The actual flight data of the rocket were collected using a barometric altimeter.
+Unfortunately, the data are very a few, due to the short duration of the flight and the low sampling rate of the altimeter.
+However, as we will see, they still can be useful to validate the CFD simulations.
+
+The \texttt{MATLAB} code used to perform the analysis is both available in the appendix (Appendix \ref{sec:appendix}) and can also be found among the file attached to this report.

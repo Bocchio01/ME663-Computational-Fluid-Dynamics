@@ -1,0 +1,24 @@
+\subsection{Solver method}
+\label{subsubsec:solver_method}
+
+The last step in the setup of the \texttt{Fluent} solver is to set the solver method.
+
+Thanks to knowledge acquired during the course, at this phase we were able to take informed decisions and we opted for the following settings:
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Parameter}       & \textbf{Value}      \\
+        \hline
+        Pressure-velocity scheme & Coupled             \\
+        Momentum                 & Second Order Upwind \\
+        \hline
+    \end{tabular}
+    \caption{Solver method settings used.}
+    \label{tab:solver_method}
+\end{table}
+
+All the other parameters were left to the default settings, which for most of spatial discretization or interpolations schemes were set to \textit{Second Order Upwind}.
+
+A complete list of the settings used for the simulations is reported in the \texttt{XML} file in the Appendix \ref{sec:appendix}.

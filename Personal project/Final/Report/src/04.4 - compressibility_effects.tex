@@ -1,0 +1,72 @@
+\subsection{Compressibility effects}
+\label{subsec:compressibility_effects}
+
+Before moving on, we need to decide whether to take into account the compressibility effects in the simulations or not.
+
+It's well known from literature and experimental data that compressibility effects start to become important when the flow speed reaches a significant fraction of the speed of sound.
+In particular, the Mach number of the flow is a good indicator of the importance of the compressibility effects.
+The condition that distinguishes between incompressible and compressible flows is given by:
+
+\begin{equation}
+    Ma = \frac{v}{c} = \begin{cases}
+        < 0.3 & \text{Incompressible flow} \\
+        > 0.3 & \text{Compressible flow}
+    \end{cases}
+    \label{eq:mach_number}
+\end{equation}
+
+Where $Ma$ is the Mach number, $v$ is the flow speed and $c$ is the speed of sound in the fluid.
+
+To determine whether to take into account the compressibility effects or not, we need to make some hand calculations based on the whether condition present when the rocket was flying.
+In Table \ref{tab:conditions} we report the relevant parameters.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} \\
+        \hline
+        Altitude           & $1444m$        \\
+        Temperature        & $15^{\circ}C$  \\
+        \hline
+    \end{tabular}
+    \caption{Conditions present during the rocket flight.}
+    \label{tab:conditions}
+\end{table}
+
+Considering air as an ideal gas, the definition of the speed of sound is given by the following equation:
+
+\begin{equation}
+    c = \sqrt{\gamma \frac{p}{\rho}} = \sqrt{\gamma \bar{R} T}
+    \label{eq:speed_of_sound}
+\end{equation}
+
+Where $\gamma$ is the specific heat ratio, $\bar{R}$ is the specific gas constant and $T$ is the temperature of the fluid.
+
+The specific heat ratio for air is $\gamma = 1.4$ and the specific gas constant considering dry air can be computed as:
+
+\begin{equation}
+    \bar{R} = \frac{R}{M_{mol}} = \frac{8.314}{\frac{28.96}{1000}} = 287.05 \frac{J}{kg \cdot K}
+\end{equation}
+
+Where $R$ is the universal gas constant and $M_{mol}$ is the molar mass of dry air.
+
+Plugging the values into Equation \ref{eq:speed_of_sound}, we get:
+
+\begin{equation}
+    c = \sqrt{1.4 \cdot 287.05 \cdot (273.15 + 15)} = 340.3 \frac{m}{s}
+\end{equation}
+
+From the rocket flight data, we know that the rocket reached a maximum speed of around $130m/s$.
+
+Plugging the values into Equation \ref{eq:mach_number}, we get:
+
+\begin{equation}
+    Ma = \frac{130}{340.3} = 0.382
+\end{equation}
+
+The maximum Mach number is $0.382$, which is above the threshold of $0.3$.
+For this reason, we decided to take into account the compressibility effects in the simulations.
+To do so, we modified the \textit{Material} properties in \texttt{Fluent}, setting the model of the air to \textit{Ideal Gas} instead of \textit{Incompressible}.
+
+However, we believe that this choice is not critical for the results of the simulations, given that the maximum Mach number was reached only for a short period of time during the flight, while for the rest of it $Ma$ was below the threshold.
