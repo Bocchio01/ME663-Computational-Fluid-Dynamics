@@ -2,10 +2,10 @@
 <Storage>
   <Project Version="9.1">
     <base-designpoint-name valType="String">0</base-designpoint-name>
-    <timestamp-max valType="Int64">4757</timestamp-max>
+    <timestamp-max valType="Int64">4953</timestamp-max>
     <framework-build-version valType="String">24.1.144.0</framework-build-version>
     <external-version-string valType="String">2024 R1</external-version-string>
-    <last-saved-utc valType="String">04/16/2024 02:20:22</last-saved-utc>
+    <last-saved-utc valType="String">04/19/2024 05:34:21</last-saved-utc>
     <managed-categories valType="String">[report, misc, progress]</managed-categories>
     <logHistory valType="StringArray">
       <ArrayEntry Index="0">Bocchio@PC-DI-BOCCHIO:C:\Users\Bocchio\AppData\Local\Temp\WorkbenchLogs\CoreEvents21024.log</ArrayEntry>
@@ -13,6 +13,7 @@
       <ArrayEntry Index="2">Bocchio@PC-DI-BOCCHIO:C:\Users\Bocchio\AppData\Local\Temp\WorkbenchLogs\CoreEvents5356.log</ArrayEntry>
       <ArrayEntry Index="3">Bocchio@PC-DI-BOCCHIO:C:\Users\Bocchio\AppData\Local\Temp\WorkbenchLogs\CoreEvents8512.log</ArrayEntry>
       <ArrayEntry Index="4">Bocchio@PC-DI-BOCCHIO:C:\Users\Bocchio\AppData\Local\Temp\WorkbenchLogs\CoreEvents12760.log</ArrayEntry>
+      <ArrayEntry Index="5">Bocchio@PC-DI-BOCCHIO:C:\Users\Bocchio\AppData\Local\Temp\WorkbenchLogs\CoreEvents24076.log</ArrayEntry>
     </logHistory>
     <expression-scope-container valType="String">Parameters</expression-scope-container>
     <project-type valType="String">WB2</project-type>
@@ -81,7 +82,23 @@
 "c93d4619-3e56-4f38-bb0a-be40af3ae929": "/Mesh/MechanicalModel:MechanicalModel",
 "4d924063-c36a-437d-a315-d6c3fbe8edef": "/Mesh/MechanicalMeshFile:FluentMesh",
 "d01579e8-d7c9-4d3e-9037-bd468b30967f": "/Solution/AxisContinuous:AxisX",
-"7276907b-78a8-42d6-bc92-2229ea577ee4": "/Solution/AxisContinuous:AxisY"
+"7276907b-78a8-42d6-bc92-2229ea577ee4": "/Solution/AxisContinuous:AxisY",
+"c6481ffe-6e94-462b-9b6a-181f10aaac85": "/Solution/ChartVariable:continuity",
+"54aa2844-d99b-486c-947c-956eebc08065": "/Solution/ChartVariable:x-velocity",
+"8be36541-4e39-4453-b8d5-84e625b8ccb7": "/Solution/ChartVariable:y-velocity",
+"8a93134c-8abc-451d-a12e-5c84e6bdc364": "/Solution/ChartVariable:z-velocity",
+"d93b7b6e-8a4d-43d6-b527-6823f5c9066c": "/Solution/ChartVariable:energy",
+"80dce253-32ba-4839-818f-57e9a1d0c46c": "/Solution/ChartVariable:k",
+"186d8d67-9b4a-4ea9-bc4d-e01219f31beb": "/Solution/ChartVariable:omega",
+"1976ab06-54ce-4d32-9f46-0a8695f2812e": "/Solution/ChartVariable:drag-coefficient",
+"8232ea9d-eaf0-422c-9ced-15003da6a83a": "/Solution/AxisContinuous:AxisX 1",
+"8b831060-5aea-48b5-9490-c8221266ad27": "/Solution/AxisContinuous:AxisY 1",
+"07314fbf-1720-42e1-8e7e-3cd1c0b51e80": "/Solution/ChartVariable:drag-force",
+"c8d6c9c0-83ad-40ae-95cf-afb4f1999dcd": "/Solution/AxisContinuous:AxisX 2",
+"43e4cdc9-bb00-4f49-9db1-cc7717263185": "/Solution/AxisContinuous:AxisY 2",
+"bc664940-0e2e-4b59-a2ba-7e219046c181": "/Solution/ConvergenceChart:Residual",
+"bdc07049-0356-4a43-9109-fe9f5e989a0c": "/Solution/ConvergenceChart:User-Defined",
+"b42144b1-2075-4d81-b3a9-034b03d48331": "/Solution/ConvergenceChart:User-Defined 1"
 }</ReferenceList>
         </DesignPointReferenceList>
       </DesignPointReferenceListCollection>
@@ -127,7 +144,7 @@
       <Object Name="/FileContainer/FileReference:F3" Version="1.0">
         <class-type valType="String">FileReference</class-type>
         <object-name valType="String">F3</object-name>
-        <member-data valType="String">{"DisplayText": "act.dat", "FileType": $$9a13ad4e-8d8f-4a4c-bcc2-6fd31d52c627, "DependentFiles": [], "ContainerAssociations": [], "SkipForDesignPointDuplication": False, "IsDeletable": True, "ExternalSource": None, "LastDownloadFromRepository": -1, "Location": r"$(ProjectName)_files\dp0\act.dat", "ReferenceCount": 29}</member-data>
+        <member-data valType="String">{"DisplayText": "act.dat", "FileType": $$9a13ad4e-8d8f-4a4c-bcc2-6fd31d52c627, "DependentFiles": [], "ContainerAssociations": [], "SkipForDesignPointDuplication": False, "IsDeletable": True, "ExternalSource": None, "LastDownloadFromRepository": -1, "Location": r"$(ProjectName)_files\dp0\act.dat", "ReferenceCount": 30}</member-data>
       </Object>
       <Object Name="/FileContainer/FileReference:F4" Version="1.0">
         <class-type valType="String">FileReference</class-type>
@@ -261,7 +278,7 @@
       <maxUpdateOrder valType="Double">1</maxUpdateOrder>
       <deleted-sources valType="String">[]</deleted-sources>
       <last-updated valType="Int64">0</last-updated>
-      <last-modified-by-usage valType="String">{"Extrinsic": 4737, "Input": 4738, "Output": 1505}</last-modified-by-usage>
+      <last-modified-by-usage valType="String">{"Extrinsic": 4950, "Input": 4951, "Output": 1505}</last-modified-by-usage>
       <outputs-generated-by-type valType="String">{}</outputs-generated-by-type>
       <contains-significant-data valType="Boolean">true</contains-significant-data>
       <Object Name="/Parameters/DesignPoint:0" Version="1.0">
